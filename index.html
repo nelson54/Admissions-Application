@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+		Remove this if you use the .htaccess -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>index</title>
+		<meta name="description" content="" />
+		<meta name="generator" content="Studio 3 http://aptana.com/" />
+		<meta name="author" content="Admissions" />
+		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
+	</head>
+	<body>
+		<div>
+			<header>
+				<h1>Currvy</h1>
+				<div id="toolbar">
+					<nav>
+						<a href="#">Links</a>
+						<a href="#">Emails</a>
+						<a href="#">View</a>
+						<a href="#">Edit</a>
+					</nav>
+					<a href="#" id="userthumb">
+						<img src="thumb.jpg" />
+					</a>
+					<a href="" id="logout">Logout</a>
+					<a id="username" href="">Derek Nelson</a>
+				</div>
+			</header>
+			<div>
+				<form action="" method="" id="newResumeForm">
+
+				</form>
+			</div>
+		</div>
+	</body>
+</html>
+
+<script id="section-template" type="text/x-handlebars-template">
+	<fieldset id="{{id}}" class="resume-form-section">
+		<legend>{{title}}</legend>
+		{{#if showFields}}
+		<ul id="{{#if refValue}}{{refValue}}{{/if}}">
+			{{#each fields}}
+			<li>
+				{{{this}}}
+			</li>
+			{{/each}}
+		</ul>
+		{{/if}}
+		{{#if replicate}}
+		<p class="addFormArea">
+			<a class="addFormArea">Add another {{title_singular}}</a>
+		</p>
+		{{/if}}
+	</fieldset>
+</script>
+
+<script id="input-field-template" type="text/x-handlebars-template">
+		<label for="{{name}}">{{title}}</label>
+		<input type="{{type}}" size="{{size}}" name="{{name}}" class="{{name}}" />
+</script>
+
+<script id="select-field-template" type="text/x-handlebars-template">
+	<label for="{{name}}">{{title}}</label>
+	<select name="{{name}}">
+		{{#each option}}
+		<option value="{{this.id}}">{{this.value}}</option>
+		{{/each}}
+	</select>
+</script>
+
+<script id="textarea-field-template" type="text/x-handlebars-template">
+	<label for="{{name}}">{{title}}</label>
+	<textarea name="{{name}}" class="{{name}}" cols="{{cols}}" rows="{{rows}}">
+		{{value}}
+	</textarea>
+	 {{#if replicate}}
+	 <p class="addFormArea">
+	 	<a class="addFormArea">Add another {{title}}</a>
+	 </p>
+	 {{/if}}
+</script>
+<script type="text/javascript" src="mustache.js">//</script>
+<script type="text/javascript" src="underscore.js">//</script>
+<script type="text/javascript" src="jquery-1.5.1.min.js">//</script>
+<script type="text/javascript">
+
+formValues = {
+    pages: {
+    	"Personal_Information" : {
+	        title: "Personal Information",
+	        sections: {
+	            "Student_Type": {
+	                title: "Student Type - Check Only One",
+	                fields: {
+	                    "stdnt_type": {
+	                        type: "radio",
+	                        label: ["Associate Degree Student", "Bachelor Degree Student", "Certificate Student", "Non-degree Student", "High School Student", "Guest Student", "Apprenticeship Program", "Continuing Education Units (CEU)"],
+	                        value: ["assoc", "bach", "cert", "nondeg", "highsch", "guest", "apprent", "ceu"],
+	                        type: "string",
+	                        length: 7,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    }
+	                }
+	            },
+	            "Student_Status": {
+	                title: "Student Status - Check all that apply",
+	                fields: {
+	                    "stts_frmer": {
+	                        type: "checkbox",
+	                        label: "Former Student",
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    "stts_othCllge": {
+	                        type: "checkbox",
+	                        label: "Attended another college",
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    "stts_frstCllge": {
+	                        type: "checkbox",
+	                        label: "First time in any college",
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    "stts_inatStdnt": {
+	                        type: "checkbox",
+	                        label: "International student",
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    "stts_permAln": {
+	                        type: "checkbox",
+	                        label: "A permanent resident alien",
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    }
+	                }
+	            },
+	            "Identification": {
+	                title: "Identification",
+	                fields: {
+	                    "smc_id": {
+	                        type: "text",
+	                        label: "SMC Student ID",
+	                        name: "smc_id",
+	                        value: "",
+	                        length: 32,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    "birthdate": {
+	                        type: "text",
+	                        label: "Birth Date",
+	                        name: "birthdate",
+	                        value: "",
+	                        length: 10,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    }
+	                }
+	            }
+	        }
+	    }
+    }
+};
+	
+titleConvert = function( string ){
+	return ( string.replace(/ /g,"_") );
+}
+
+processFieldObject = function(field){
+	var newField = new Object();
+	newField[titleConvert( field.name )] = field;
+	return( newField );
+}
+
+processSectionObject = function(section){
+	var newSection = new Object();
+	newSection[titleConvert( section.title )] = _(section.fields).map(processFieldObject);
+	return( newSection );
+}
+
+processPageObject = function(page){
+	var newPage = new Object();
+	newPage[titleConvert( page.title )] = _(page.sections).map(processSectionObject);
+	return( newPage );
+}
+
+processFormObject = function(form){
+	return( _(form.pages).map(processPageObject) );
+}
+
+document.write(JSON.stringify( processFormObject(formValues)));
+
+</script>
