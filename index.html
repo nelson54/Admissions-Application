@@ -225,6 +225,15 @@ TemplateFactory = function(TemplateConstructor){
 	}
 }
 
+Template = function ( source ) {
+	this.source = source;
+	this.template = Handlebars.compile(source);
+	
+	this.render = function (context) {
+	    return ( this.template(context) );
+	}
+}
+
 templatePrepend = function(html){
 	this.append(html);
 }
