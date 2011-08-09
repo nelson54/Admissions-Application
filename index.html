@@ -185,7 +185,11 @@ Section = function (params, templateController){
 	
 	this.title = params.title;
 	this.template = "";
-	this.fields = "";
+	this.fields = {};
+	
+	for(field in params.fields){
+		this.addField(field)
+	}
 }
 
 Field = function ( params , templateFactory){
