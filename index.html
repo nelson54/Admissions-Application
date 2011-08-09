@@ -162,7 +162,7 @@ formValues = {
 
 Page = function ( params, templateFactory ){
 	this.addSection = function (section, title){
-		this.sections[this.sections] = new Section(section);
+		this.sections[title] = new Section(section);
 	}
 	
 	this.render = function (){
