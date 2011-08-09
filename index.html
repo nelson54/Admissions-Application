@@ -152,7 +152,7 @@ formValues = {
 	                        show: true
 	                    },
 	                    "birthdate": {
-	                        type: "formText",
+	                        type: "formDate",
 	                        label: "Birth Date",
 	                        name: "birthdate",
 	                        value: "",
@@ -160,7 +160,118 @@ formValues = {
 	                        required: true,
 	                        error: "string",
 	                        show: true
+	                    },
+	                    "birthcity": {
+	                    	type: "formText",
+	                    	label: "Birth Place",
+	                    	name: "birthcity",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	                    },
+	                    "birthstate": {
+	                    	type: "formOption",
+	                    	label: "",
+	                    	name: "birthstate",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	                    },
+	                    "gender": {
+	                    	type: "formRadioList",
+	                    	label: "Gender",
+	                    	name:"gender",	                        
+	                        elements: [{label: "Male", value: "1", name: "gender"}, {label: "Female", value: "2", name: "gender"}]
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    "language": {
+	                    	type: "formText",
+	                    	label: "Native Language",
+	                    	name: "language",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
 	                    }
+	                    
+	                }
+	            },
+	            "Ethnic": {
+	                title: "Ethnic Background Information",
+	                fields: {
+	                	"race_ltno": {
+	                    	type: "formRadioList",
+	                    	label: "Are you Hispanic/Latino?",
+	                    	name:"race_ltno",
+	                        elements: [{label: "Yes", value: "1", name: "race_ltno"}, {label: "No", value: "2", name: "race_ltno"}]
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    "race_afrAm": {
+	                    	type: "formCheckbox",
+	                        label: "Black or African American",
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    "race_asian": {
+	                        type: "formCheckbox",
+	                        label: "Asian",
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    "race_hwii": {
+	                        type: "formCheckbox",
+	                        label: "Native Hawaiian or Other Pacific Islander",
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    "race_amInd": {
+	                        type: "formCheckbox",
+	                        label: "American Indian or Alaska Native",
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    "race_whte": {
+	                        type: "formCheckbox",
+	                        label: "White",
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    "race_nResAln": {
+	                        type: "formCheckbox",
+	                        label: "Non-Resident Alien",
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    }
+	                    
 	                }
 	            }
 	        }
