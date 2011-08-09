@@ -182,7 +182,7 @@ formValues = {
 	                    	show: true
 	                    },
 	                    "gender": {
-	                    	type: "formRadioList",
+	                    	type: "formBoolean",
 	                    	label: "Gender",
 	                    	name:"gender",	                        
 	                        elements: [{label: "Male", value: "1", name: "gender"}, {label: "Female", value: "2", name: "gender"}]
@@ -208,7 +208,7 @@ formValues = {
 	                title: "Ethnic Background Information",
 	                fields: {
 	                	"race_ltno": {
-	                    	type: "formRadioList",
+	                    	type: "formBoolean",
 	                    	label: "Are you Hispanic/Latino?",
 	                    	name:"race_ltno",
 	                        elements: [{label: "Yes", value: "1", name: "race_ltno"}, {label: "No", value: "2", name: "race_ltno"}]
@@ -217,61 +217,17 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "race_afrAm": {
+	                    "race": {
 	                    	type: "formCheckbox",
-	                        label: "Black or African American",
+	                        label: "Regardless of your answer to the prior question, please indicate how you identify yourself. (Check all that apply)",
+	                        elements: [{label: "Black or African American", value: "", name: "race_afrAm"}, {label: "Asian", value: "", name: "race_asian"}, {label: "Native Hawaiian or Other Pacific Islander", value: "", name: "race_hwii"}, {label: "American Indian or Alaska Native", value: "", name: "race_amInd"}, {label: "White", value: "", name:"race_whte"}, {label: "Non-Resident Alien", value: "", name: "race_nResAln"}],
+	                        name: "race",
 	                        value: "",
 	                        length: 1,
 	                        required: true,
 	                        error: "string",
 	                        show: true
-	                    },
-	                    "race_asian": {
-	                        type: "formCheckbox",
-	                        label: "Asian",
-	                        value: "",
-	                        length: 1,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    },
-	                    "race_hwii": {
-	                        type: "formCheckbox",
-	                        label: "Native Hawaiian or Other Pacific Islander",
-	                        value: "",
-	                        length: 1,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    },
-	                    "race_amInd": {
-	                        type: "formCheckbox",
-	                        label: "American Indian or Alaska Native",
-	                        value: "",
-	                        length: 1,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    },
-	                    "race_whte": {
-	                        type: "formCheckbox",
-	                        label: "White",
-	                        value: "",
-	                        length: 1,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    },
-	                    "race_nResAln": {
-	                        type: "formCheckbox",
-	                        label: "Non-Resident Alien",
-	                        value: "",
-	                        length: 1,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    }
-	                    
+	                    }	                    
 	                }
 	            }
 	        }
