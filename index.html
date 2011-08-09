@@ -159,9 +159,7 @@ formValues = {
     }
 };
 
-$('body').append( templateRender("form-radiolist-template", formValues.pages.Personal_Information.sections.Student_Type) );
-
-Page = function (params){
+Page = function ( params, templateController ){
 	this.addSection = function (params){
 		
 	}
@@ -171,10 +169,11 @@ Page = function (params){
 	}
 	
 	this.title = params.title;
+	this.templateController = templateController;
 	this.sections = [];
 }
 
-Section = function (params){
+Section = function (params, templateController){
 	this.addField = function (params){
 		
 	}
@@ -188,7 +187,7 @@ Section = function (params){
 	this.fields = "";
 }
 
-Field = function ( params ){
+Field = function ( params , templateController){
 	this.render = function (){
 		templateRender(this)
 	}
@@ -197,8 +196,19 @@ Field = function ( params ){
 		
 	}
 	
-	this.title = params.title;
-	this.template = "";
+	this.getTemplate = function(){
+		this.template = templateController.getTemplate(this.type)
+	}
+	
+	this.type = "text";
+    this.required = false;
+    this.error = "This field has an error.";
+    this.show = true;
+	
+	_.extend(this, params);
+	
+	this.templateController = templateController;
+	this.getTemplate();
 }
 
 templatePrepend = function(html){
@@ -210,5 +220,4 @@ templateRender = function(template, context){
     var template = Handlebars.compile(source);
     return ( template(context) );
 }
-
 </script>
