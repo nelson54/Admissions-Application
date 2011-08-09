@@ -49,7 +49,7 @@
 	</fieldset>
 </script>
 
-<script id="form-radiolist-template" type="text/x-handlebars-template">
+<script id="form-radiolist-template" type="text/x-handlebars-template" title="formRadioList">
 	<h3>{{title}}</h3>
 	{{#each fields.stdnt_type.elements}}
 		<p><label>{{this.label}}</label><input type="radio" name="" value="{{this.value}}" /></p>
@@ -69,7 +69,7 @@ formValues = {
 	                title: "Student Type - Check Only One",
 	                fields: {
 	                    "stdnt_type": {
-	                        type: "radiolist",
+	                        type: "formRadioList",
 	                        elements: [ {label:"Associate Degree Student", value:"assoc"}, {label:"Bachelor Degree Student", value:"bach"}, {label:"Certificate Student", value:"cert"}, {label:"Non-degree Student", value:"nondeg"}, {label:"High School Student", value:"highsch"}, {label:"Guest Student", value:"guest"}, {label:"Apprenticeship Program",value:"apprent"}, {label:"Continuing Education Units (CEU)",value:"ceu"}],
 	                        type: "string",
 	                        length: 7,
@@ -187,9 +187,9 @@ Section = function (params, templateController){
 	this.fields = "";
 }
 
-Field = function ( params , templateController){
+Field = function ( params , templateFactory){
 	this.render = function (){
-		templateRender(this)
+		this.template.render(this);
 	}
 	
 	this.setValue = function ( value ){
@@ -197,7 +197,7 @@ Field = function ( params , templateController){
 	}
 	
 	this.getTemplate = function(){
-		this.template = templateController.getTemplate(this.type)
+		this.template = templateFactory.getTemplate(this.type)
 	}
 	
 	this.type = "text";
@@ -207,8 +207,22 @@ Field = function ( params , templateController){
 	
 	_.extend(this, params);
 	
-	this.templateController = templateController;
+	this.templateFactory = templateFactory;
 	this.getTemplate();
+}
+
+TemplateFactory = function(TemplateConstructor){
+	this.getTemplate = function(type){
+		return (this.templates[type]);
+	}
+	
+	this.templates = { };
+	
+	for (template in $('script [type="text/x-handlebars-template"]')){
+		var datatype = $('script [type="text/x-handlebars-template"]')[template].attr('title');
+		var html = $('script [type="text/x-handlebars-template"]')[template].html();
+		templates[datatype] = new TemplateConstructor(html);
+	}
 }
 
 templatePrepend = function(html){
