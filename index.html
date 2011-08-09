@@ -29,7 +29,7 @@
 	</body>
 </html>
 
-<script id="section-template" type="text/x-handlebars-template">
+<script id="section-template" type="text/x-handlebars-template" title="formSection">
 	<fieldset id="{{id}}" class="resume-form-section">
 		<legend>{{title}}</legend>
 		{{#if showFields}}
@@ -72,7 +72,6 @@ formValues = {
 	                    "stdnt_type": {
 	                        type: "formRadioList",
 	                        elements: [ {label:"Associate Degree Student", value:"assoc"}, {label:"Bachelor Degree Student", value:"bach"}, {label:"Certificate Student", value:"cert"}, {label:"Non-degree Student", value:"nondeg"}, {label:"High School Student", value:"highsch"}, {label:"Guest Student", value:"guest"}, {label:"Apprenticeship Program",value:"apprent"}, {label:"Continuing Education Units (CEU)",value:"ceu"}],
-	                        type: "string",
 	                        length: 7,
 	                        required: true,
 	                        error: "string",
@@ -219,11 +218,11 @@ TemplateFactory = function(TemplateConstructor){
 	
 	this.templates = { };
 	
-	for (template in $('script [type="text/x-handlebars-template"]')){
-		var datatype = $('script [type="text/x-handlebars-template"]')[template].attr('title');
-		var html = $('script [type="text/x-handlebars-template"]')[template].html();
-		templates[datatype] = new TemplateConstructor(html);
-	}
+	$('script [type="text/x-handlebars-template"]').each(function(index){
+		var datatype = $(this).attr('title');
+		var html = $(this).html();
+		this.templates[datatype] = new TemplateConstructor(html);
+	})
 }
 
 Template = function ( source ) {
@@ -238,9 +237,6 @@ Template = function ( source ) {
 templateFactory = new TemplateFactory(Template);
 
 stdntTypeField = new Field(formValues.pages.Personal_Information.sections.Student_Type.fields.stdnt_type, templateFactory);
-
-formValues.pages.Personal_Information.sections.Student_Type.fields.stdnt_type
-
 
 templatePrepend = function(html){
 	this.append(html);
