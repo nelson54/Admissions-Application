@@ -93,13 +93,13 @@
 </script>
 
 <script id="form-boolean-template" type="text/x-handlebars-template" title="formBoolean">
-		<p><label>Cell Phone</label><br />
+		<p><label>{{this.label}}</label><br />
 		<input type="radio" value="1" name="{{name}}" /><label>Yes</label>
 		<input type="radio" value="0" name="{{name}}" /><label>No</label>
 </script>
 
 <script id="form-phone-template" type="text/x-handlebars-template" title="formPhone">
-		<p><label>Cell Phone</label><br />
+		<p><label>{{this.label}}</label><br />
 		(<input name="{{name}}-phone-1" type="text" maxlength="3"  size="2"  />)<input name="{{name}}-phone-2" type="text" maxlength="3"  size="2"  />-<input name="{{name}}-phone-3" type="text" maxlength="4"  size="3"  /></p>
 </script>
 
