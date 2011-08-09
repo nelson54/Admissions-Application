@@ -226,6 +226,7 @@ TemplateFactory = function(TemplateConstructor){
 	}
 }
 
+<<<<<<< Updated upstream
 Template = function ( source ) {
 	this.source = source;
 	this.template = Handlebars.compile(source);
@@ -234,13 +235,13 @@ Template = function ( source ) {
 	    return ( this.template(context) );
 	}
 }
-
+=======
 templateFactory = new TemplateFactory(Template);
 
 stdntTypeField = new Field(formValues.pages.Personal_Information.sections.Student_Type.fields.stdnt_type, templateFactory);
 
 formValues.pages.Personal_Information.sections.Student_Type.fields.stdnt_type
-
+>>>>>>> Stashed changes
 
 templatePrepend = function(html){
 	this.append(html);
