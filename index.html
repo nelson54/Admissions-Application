@@ -20,7 +20,7 @@
 	</body>
 </html>
 
-<script id="section-template" type="text/x-handlebars-template" title="formPage">
+<script id="page-template" type="text/x-handlebars-template" title="formPage">
 	<div>
 		<header>
 			<h1>{{title}}</h1>
@@ -54,14 +54,14 @@
 	{{/each}}
 </script>
 
-<script id="form-radiolist-template" type="text/x-handlebars-template" title="formCheckboxList">
+<script id="form-checkboxlist-template" type="text/x-handlebars-template" title="formCheckboxList">
 	<label for="{{name}}"></label>
 	{{#each elements}}
 		<input type="checkbox" name="{{this.name}}" value="{{this.value}}" /><label for="{{this.name}}">{{this.label}}</label>
 	{{/each}}
 </script>
 
-<script id="form-radiolist-template" type="text/x-handlebars-template" title="formOption">
+<script id="form-option-template" type="text/x-handlebars-template" title="formOption">
 	<p><label for="{{name}}">{{this.label}}</label><br />
 	<select name="{{name}}">
 	{{#each options}}
@@ -74,7 +74,7 @@
 		<p><label>{{this.label}}</label><input type="checkbox" name="{{name}}" value="{{this.value}}" /></p>
 </script>
 
-<script id="form-checkbox-template" type="text/x-handlebars-template" title="formDateRange">
+<script id="form-dateRange-template" type="text/x-handlebars-template" title="formDateRange">
 		<p>
 			<label>{{this.label}}</label><br />
 			<label class="secondry" for="{{fromName}}">From</label>
@@ -84,7 +84,7 @@
 		</p>
 </script>
 
-<script id="form-checkbox-template" type="text/x-handlebars-template" title="formDate">
+<script id="form-date-template" type="text/x-handlebars-template" title="formDate">
 		<p>
 			<label>{{this.label}}</label>
 			<input type="text" class="date" name="{{name}}" value="{{this.Value}}" />
@@ -92,13 +92,13 @@
 		</p>
 </script>
 
-<script id="form-checkbox-template" type="text/x-handlebars-template" title="formBoolean">
+<script id="form-boolean-template" type="text/x-handlebars-template" title="formBoolean">
 		<p><label>Cell Phone</label><br />
 		<input type="radio" value="1" name="{{name}}" /><label>Yes</label>
 		<input type="radio" value="0" name="{{name}}" /><label>No</label>
 </script>
 
-<script id="form-checkbox-template" type="text/x-handlebars-template" title="formPhone">
+<script id="form-phone-template" type="text/x-handlebars-template" title="formPhone">
 		<p><label>Cell Phone</label><br />
 		(<input name="{{name}}-phone-1" type="text" maxlength="3"  size="2"  />)<input name="{{name}}-phone-2" type="text" maxlength="3"  size="2"  />-<input name="{{name}}-phone-3" type="text" maxlength="4"  size="3"  /></p>
 </script>
@@ -229,7 +229,7 @@ formValues = {
 	                    	type: "formBoolean",
 	                    	label: "Gender",
 	                    	name:"gender",	                        
-	                        elements: [{label: "Male", value: "1", name: "gender"}, {label: "Female", value: "2", name: "gender"}]
+	                        elements: [{label: "Male", value: "1", name: "gender"}, {label: "Female", value: "2", name: "gender"}],
 	                        length: 1,
 	                        required: true,
 	                        error: "string",
@@ -255,7 +255,7 @@ formValues = {
 	                    	type: "formBoolean",
 	                    	label: "Are you Hispanic/Latino?",
 	                    	name:"race_ltno",
-	                        elements: [{label: "Yes", value: "1", name: "race_ltno"}, {label: "No", value: "2", name: "race_ltno"}]
+	                        elements: [{label: "Yes", value: "1", name: "race_ltno"}, {label: "No", value: "2", name: "race_ltno"}],
 	                        length: 1,
 	                        required: true,
 	                        error: "string",
