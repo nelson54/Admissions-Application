@@ -188,21 +188,26 @@ Page = function ( params, templateFactory ){
 }
 
 Section = function (params, templateFactory){
-	this.addField = function (params){
-		
+	this.addField = function (field, title){
+		this.fields[title] = new Field(field);
 	}
 	
 	this.render = function (){
-		
+		return( this.template.render(this) );
 	}
 	
 	this.title = params.title;
-	this.template = "";
+	this.type = "formPageTemplate";
 	this.fields = {};
 	
+	_.extend(this, params);
+	
 	for(field in params.fields){
-		this.addField(field)
+		this.addField(params.fields[field], field);
 	}
+	
+	this.templateFactory = templateFactory;
+	this.getTemplate();
 }
 
 Field = function ( params , templateFactory){
