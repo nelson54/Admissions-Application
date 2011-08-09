@@ -51,8 +51,8 @@
 
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="formRadioList">
 	<h3>{{title}}</h3>
-	{{#each fields.stdnt_type.elements}}
-		<p><label>{{this.label}}</label><input type="radio" name="" value="{{this.value}}" /></p>
+	{{#each elements}}
+		<p><label>{{this.label}}</label><input type="radio" name="{{name}}" value="{{this.value}}" /></p>
 	{{/each}}
 </script>
 
@@ -71,7 +71,7 @@ formValues = {
 	                fields: {
 	                    "stdnt_type": {
 	                        type: "formRadioList",
-	                        elements: [ {label:"Associate Degree Student", value:"assoc"}, {label:"Bachelor Degree Student", value:"bach"}, {label:"Certificate Student", value:"cert"}, {label:"Non-degree Student", value:"nondeg"}, {label:"High School Student", value:"highsch"}, {label:"Guest Student", value:"guest"}, {label:"Apprenticeship Program",value:"apprent"}, {label:"Continuing Education Units (CEU)",value:"ceu"}],
+	                        elements: [ {label:"Associate Degree Student", value:"assoc", name:"stdnt_type"}, {label:"Bachelor Degree Student", value:"bach", name:"stdnt_type"}, {label:"Certificate Student", value:"cert", name:"stdnt_type"}, {label:"Non-degree Student", value:"nondeg", name:"stdnt_type"}, {label:"High School Student", value:"highsch", name:"stdnt_type"}, {label:"Guest Student", value:"guest", name:"stdnt_type"}, {label:"Apprenticeship Program",value:"apprent", name:"stdnt_type"}, {label:"Continuing Education Units (CEU)",value:"ceu", name:"stdnt_type"}],
 	                        length: 7,
 	                        required: true,
 	                        error: "string",
@@ -83,6 +83,7 @@ formValues = {
 	                title: "Student Status - Check all that apply",
 	                fields: {
 	                    "stts_frmer": {
+	                    	name: "stdnt_type",
 	                        type: "checkbox",
 	                        label: "Former Student",
 	                        value: "",
@@ -189,7 +190,7 @@ Section = function (params, templateController){
 
 Field = function ( params , templateFactory){
 	this.render = function (){
-		this.template.render(this);
+		return( this.template.render(this) );
 	}
 	
 	this.setValue = function ( value ){
@@ -216,13 +217,15 @@ TemplateFactory = function(TemplateConstructor){
 		return (this.templates[type]);
 	}
 	
-	this.templates = { };
+	templates = new Object();
 	
-	$('script [type="text/x-handlebars-template"]').each(function(index){
+	$('script[type="text/x-handlebars-template"]').each(function(index){
 		var datatype = $(this).attr('title');
 		var html = $(this).html();
-		this.templates[datatype] = new TemplateConstructor(html);
+		templates[datatype] = new TemplateConstructor(html);
 	})
+	
+	this.templates = templates;
 }
 
 Template = function ( source ) {
@@ -237,6 +240,8 @@ Template = function ( source ) {
 templateFactory = new TemplateFactory(Template);
 
 stdntTypeField = new Field(formValues.pages.Personal_Information.sections.Student_Type.fields.stdnt_type, templateFactory);
+
+$("body").append(stdntTypeField.render());
 
 templatePrepend = function(html){
 	this.append(html);
