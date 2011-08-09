@@ -30,22 +30,15 @@
 </html>
 
 <script id="section-template" type="text/x-handlebars-template" title="formSection">
-	<fieldset id="{{id}}" class="resume-form-section">
+	<fieldset class="resume-form-section">
 		<legend>{{title}}</legend>
-		{{#if showFields}}
-		<ul id="{{#if refValue}}{{refValue}}{{/if}}">
+		<ul>
 			{{#each fields}}
 			<li>
-				{{{this}}}
+				{{{this.render()}}}
 			</li>
 			{{/each}}
 		</ul>
-		{{/if}}
-		{{#if replicate}}
-		<p class="addFormArea">
-			<a class="addFormArea">Add another {{title_singular}}</a>
-		</p>
-		{{/if}}
 	</fieldset>
 </script>
 
@@ -174,7 +167,7 @@ Page = function ( params, templateFactory ){
 	}
 	
 	this.title = params.title;
-	this.type = "formPageTemplate";
+	this.type = "formPage";
 	this.sections = {};
 	
 	_.extend(this, params);
@@ -197,7 +190,7 @@ Section = function (params, templateFactory){
 	}
 	
 	this.title = params.title;
-	this.type = "formPageTemplate";
+	this.type = "formSection";
 	this.fields = {};
 	
 	_.extend(this, params);
@@ -261,17 +254,7 @@ Template = function ( source ) {
 
 templateFactory = new TemplateFactory(Template);
 
-stdntTypeField = new Field(formValues.pages.Personal_Information.sections.Student_Type.fields.stdnt_type, templateFactory);
+stdntTypeSection = new Field(formValues.pages.Personal_Information.sections.Student_Type, templateFactory);
 
-$("body").append(stdntTypeField.render());
-
-templatePrepend = function(html){
-	this.append(html);
-}
-
-templateRender = function(template, context){
-    var source   = $("#"+template).html();
-    var template = Handlebars.compile(source);
-    return ( template(context) );
-}
+$("body").append(stdntTypeSection.render());
 </script>
