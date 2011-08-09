@@ -16,18 +16,24 @@
 		<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
 	</head>
 	<body>
-		<div>
-			<header>
-				<h1>Ferris Application</h1>
-			</header>
-			<div>
-				<form action="" method="" id="newResumeForm">
-
-				</form>
-			</div>
-		</div>
+		
 	</body>
 </html>
+
+<script id="section-template" type="text/x-handlebars-template" title="formPage">
+	<div>
+		<header>
+			<h1>{{title}}</h1>
+		</header>
+		<div>
+			<form action="" method="" id="newResumeForm">
+				{{#each sectionsHtml}}
+					{{{this}}}
+				{{/each}}
+			</form>
+		</div>
+	</div>
+</script>
 
 <script id="section-template" type="text/x-handlebars-template" title="formSection">
 	<fieldset class="resume-form-section">
@@ -35,7 +41,7 @@
 		<ul>
 			{{#each fieldsHtml}}
 			<li>
-				{{{this.}}}
+				{{{this}}}
 			</li>
 			{{/each}}
 		</ul>
@@ -43,13 +49,13 @@
 </script>
 
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="formRadioList">
-	<h3>{{title}}</h3>
+	<label for="{{name}}"></label>
 	{{#each elements}}
-		<p><label>{{this.label}}</label><input type="radio" name="{{name}}" value="{{this.value}}" /></p>
+		<p><label for="{{name}}">{{this.label}}</label><input type="radio" name="{{name}}" value="{{this.value}}" /></p>
 	{{/each}}
 </script>
 
-<script id="form-checkbox-template" type="text/x-handlebars-template" title="formCheckBox">
+<script id="form-checkbox-template" type="text/x-handlebars-template" title="formCheckbox">
 		<p><label>{{this.label}}</label><input type="checkbox" name="{{name}}" value="{{this.value}}" /></p>
 </script>
 
@@ -71,6 +77,7 @@ formValues = {
 	                title: "Student Type - Check Only One",
 	                fields: {
 	                    "stdnt_type": {
+	                    	name:"stdnt_type",
 	                        type: "formRadioList",
 	                        elements: [ {label:"Associate Degree Student", value:"assoc", name:"stdnt_type"}, {label:"Bachelor Degree Student", value:"bach", name:"stdnt_type"}, {label:"Certificate Student", value:"cert", name:"stdnt_type"}, {label:"Non-degree Student", value:"nondeg", name:"stdnt_type"}, {label:"High School Student", value:"highsch", name:"stdnt_type"}, {label:"Guest Student", value:"guest", name:"stdnt_type"}, {label:"Apprenticeship Program",value:"apprent", name:"stdnt_type"}, {label:"Continuing Education Units (CEU)",value:"ceu", name:"stdnt_type"}],
 	                        length: 7,
@@ -85,7 +92,7 @@ formValues = {
 	                fields: {
 	                    "stts_frmer": {
 	                    	name: "stdnt_type",
-	                        type: "checkbox",
+	                        type: "formCheckbox",
 	                        label: "Former Student",
 	                        value: "",
 	                        length: 1,
@@ -94,7 +101,7 @@ formValues = {
 	                        show: true
 	                    },
 	                    "stts_othCllge": {
-	                        type: "checkbox",
+	                        type: "formCheckbox",
 	                        label: "Attended another college",
 	                        value: "",
 	                        length: 1,
@@ -103,7 +110,7 @@ formValues = {
 	                        show: true
 	                    },
 	                    "stts_frstCllge": {
-	                        type: "checkbox",
+	                        type: "formCheckbox",
 	                        label: "First time in any college",
 	                        value: "",
 	                        length: 1,
@@ -112,7 +119,7 @@ formValues = {
 	                        show: true
 	                    },
 	                    "stts_inatStdnt": {
-	                        type: "checkbox",
+	                        type: "formCheckbox",
 	                        label: "International student",
 	                        value: "",
 	                        length: 1,
@@ -121,7 +128,7 @@ formValues = {
 	                        show: true
 	                    },
 	                    "stts_permAln": {
-	                        type: "checkbox",
+	                        type: "formCheckbox",
 	                        label: "A permanent resident alien",
 	                        value: "",
 	                        length: 1,
@@ -135,7 +142,7 @@ formValues = {
 	                title: "Identification",
 	                fields: {
 	                    "smc_id": {
-	                        type: "text",
+	                        type: "formText",
 	                        label: "SMC Student ID",
 	                        name: "smc_id",
 	                        value: "",
@@ -145,7 +152,7 @@ formValues = {
 	                        show: true
 	                    },
 	                    "birthdate": {
-	                        type: "text",
+	                        type: "formText",
 	                        label: "Birth Date",
 	                        name: "birthdate",
 	                        value: "",
@@ -163,10 +170,13 @@ formValues = {
 
 Page = function ( params, templateFactory ){
 	this.addSection = function (section, title){
-		this.sections[title] = new Section(section);
+		this.sections[title] = new Section(section, templateFactory);
 	}
 	
 	this.render = function (){
+		for (section in this.sections){
+			this.sectionsHtml.push( this.sections[section].render() )
+		}
 		return( this.template.render(this) );
 	}
 	
@@ -175,13 +185,14 @@ Page = function ( params, templateFactory ){
 	}
 	
 	this.title = params.title;
+	this.sectionsHtml = []
 	this.type = "formPage";
 	this.sections = {};
 	
 	_.extend(this, params);
 	
-	for(section in params.Sections){
-		this.addSection(params.Sections[section], section)
+	for(section in params.sections){
+		this.addSection(params.sections[section], section, templateFactory)
 	}
 	
 	this.templateFactory = templateFactory;
@@ -189,15 +200,19 @@ Page = function ( params, templateFactory ){
 }
 
 Section = function (params, templateFactory){
-	this.addField = function (field, title){
-		this.fields[title] = new Field(field);
-	}
-	
 	this.render = function (){
 		for (field in this.fields){
 			this.fieldsHtml.push( this.fields[field].render() )
 		}
 		return( this.template.render(this) );
+	}
+	
+	this.addField = function (field, title){
+		this.fields[title] = new Field(field, templateFactory);
+	}
+	
+	this.getTemplate = function(){
+		this.template = templateFactory.getTemplate(this.type)
 	}
 	
 	this.title = params.title;
@@ -266,7 +281,7 @@ Template = function ( source ) {
 
 templateFactory = new TemplateFactory(Template);
 
-stdntTypeSection = new Field(formValues.pages.Personal_Information.sections.Student_Type, templateFactory);
+persInfoPage = new Page(formValues.pages.Personal_Information, templateFactory);
 
-$("body").append(stdntTypeSection.render());
+$("body").append(persInfoPage.render());
 </script>
