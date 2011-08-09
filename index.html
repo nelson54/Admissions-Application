@@ -43,9 +43,9 @@
 </script>
 
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="formRadioList">
-	<h3>{{title}}</h3>
+	<label for="{{name}}"></label>
 	{{#each elements}}
-		<p><label>{{this.label}}</label><input type="radio" name="{{name}}" value="{{this.value}}" /></p>
+		<p><label for="{{name}}">{{this.label}}</label><input type="radio" name="{{name}}" value="{{this.value}}" /></p>
 	{{/each}}
 </script>
 
@@ -163,7 +163,7 @@ formValues = {
 
 Page = function ( params, templateFactory ){
 	this.addSection = function (section, title){
-		this.sections[title] = new Section(section);
+		this.sections[title] = new Section(section, templateFactory);
 	}
 	
 	this.render = function (){
@@ -189,15 +189,19 @@ Page = function ( params, templateFactory ){
 }
 
 Section = function (params, templateFactory){
-	this.addField = function (field, title){
-		this.fields[title] = new Field(field);
-	}
-	
 	this.render = function (){
 		for (field in this.fields){
 			this.fieldsHtml.push( this.fields[field].render() )
 		}
 		return( this.template.render(this) );
+	}
+	
+	this.addField = function (field, title){
+		this.fields[title] = new Field(field, templateFactory);
+	}
+	
+	this.getTemplate = function(){
+		this.template = templateFactory.getTemplate(this.type)
 	}
 	
 	this.title = params.title;
@@ -266,7 +270,7 @@ Template = function ( source ) {
 
 templateFactory = new TemplateFactory(Template);
 
-stdntTypeSection = new Field(formValues.pages.Personal_Information.sections.Student_Type, templateFactory);
+stdntTypeSection = new Section(formValues.pages.Personal_Information.sections.Student_Type, templateFactory);
 
 $("body").append(stdntTypeSection.render());
 </script>
