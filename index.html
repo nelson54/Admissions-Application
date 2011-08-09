@@ -55,7 +55,7 @@
 		<p><label>{{this.label}}</label><input type="radio" name="" value="{{this.value}}" /></p>
 	{{/each}}
 </script>
-<!---<label>{{this}}</label><input type="radio" name="" value="{{this}}" />--->
+
 <script type="text/javascript" src="mustache.js">//</script>
 <script type="text/javascript" src="underscore.js">//</script>
 <script type="text/javascript" src="jquery-1.5.1.min.js">//</script>
@@ -159,6 +159,48 @@ formValues = {
     }
 };
 
+$('body').append( templateRender("form-radiolist-template", formValues.pages.Personal_Information.sections.Student_Type) );
+
+Page = function (params){
+	this.addSection = function (params){
+		
+	}
+	
+	this.render = function (){
+		
+	}
+	
+	this.title = params.title;
+	this.sections = [];
+}
+
+Section = function (params){
+	this.addField = function (params){
+		
+	}
+	
+	this.render = function (){
+		
+	}
+	
+	this.title = params.title;
+	this.template = "";
+	this.fields = "";
+}
+
+Field = function ( params ){
+	this.render = function (){
+		templateRender(this)
+	}
+	
+	this.setValue = function ( value ){
+		
+	}
+	
+	this.title = params.title;
+	this.template = "";
+}
+
 templatePrepend = function(html){
 	this.append(html);
 }
@@ -166,11 +208,7 @@ templatePrepend = function(html){
 templateRender = function(template, context){
     var source   = $("#"+template).html();
     var template = Handlebars.compile(source);
-    context.name = context.title.replace(/ /g,"_").replace("/","_");
     return ( template(context) );
 }
-
-
-$('body').append( templateRender("form-radiolist-template", formValues.pages.Personal_Information.sections.Student_Type) );
 
 </script>
