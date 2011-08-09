@@ -160,21 +160,34 @@ formValues = {
     }
 };
 
-Page = function ( params, templateController ){
-	this.addSection = function (params){
-		
+Page = function ( params, templateFactory ){
+	this.addSection = function (section, title){
+		this.sections[this.sections] = new Section(section);
 	}
 	
 	this.render = function (){
-		
+		return( this.template.render(this) );
+	}
+	
+	this.getTemplate = function(){
+		this.template = templateFactory.getTemplate(this.type)
 	}
 	
 	this.title = params.title;
-	this.templateController = templateController;
-	this.sections = [];
+	this.type = "formPageTemplate";
+	this.sections = {};
+	
+	_.extend(this, params);
+	
+	for(section in params.Sections){
+		this.addSection(params.Sections[section], section)
+	}
+	
+	this.templateFactory = templateFactory;
+	this.getTemplate();
 }
 
-Section = function (params, templateController){
+Section = function (params, templateFactory){
 	this.addField = function (params){
 		
 	}
