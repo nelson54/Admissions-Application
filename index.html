@@ -33,9 +33,9 @@
 	<fieldset class="resume-form-section">
 		<legend>{{title}}</legend>
 		<ul>
-			{{#each fields}}
+			{{#each fieldsHtml}}
 			<li>
-				{{{this.render()}}}
+				{{{this.}}}
 			</li>
 			{{/each}}
 		</ul>
@@ -186,12 +186,16 @@ Section = function (params, templateFactory){
 	}
 	
 	this.render = function (){
+		for (field in this.fields){
+			this.fieldsHtml.push( this.fields[field].render() )
+		}
 		return( this.template.render(this) );
 	}
 	
 	this.title = params.title;
 	this.type = "formSection";
 	this.fields = {};
+	this.fieldsHtml = [];
 	
 	_.extend(this, params);
 	
