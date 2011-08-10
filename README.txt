@@ -28,6 +28,22 @@ formValues = {
 }
 
 formBoolean
+	Used for any two-option, radio question e.g. gender, yes or no...
+	Use label1, label2, value1, value2 to specify. Otherwise, it defaults to Yes, No, 1, 0, respectively.
+{
+	name: "gender",
+	type: "formBoolean",
+	label: "Gender",
+	name:"gender",
+	label1: "Male",
+	value1: "1",
+	label2: "Female",
+	value2: "2",
+	length: 1,
+	required: true,
+	error: "string",
+	show: true
+}
 
 formCheckbox
 
