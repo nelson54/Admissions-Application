@@ -38,7 +38,7 @@ formBoolean
 	label1: "Male",
 	value1: "1",
 	label2: "Female",
-	value2: "2",
+	value2: "0",
 	length: 1,
 	required: true,
 	error: "string",
@@ -46,19 +46,28 @@ formBoolean
 }
 
 formCheckbox
+	just a check box
 
 formCheckboxList
+	group of checkboxes
 
 formDate
+	date field
 
 formDateRange
+	from date to date
 
 formLocation
+	city and state
 
 formOption
+	Drop down options
 
 formPhone
+	it's a phone!
 
 formRadioList
+	lots of radios
 
 formText
+	just a plain ol' textbox

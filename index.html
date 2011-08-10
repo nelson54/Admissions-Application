@@ -78,7 +78,7 @@
 </script>
 
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="formRadioList">
-	<label for="{{name}}"></label>
+	{{#if label}}<label for="{{name}}">{{label}}</label>{{/if}}
 	{{#each elements}}
 		<p><label for="{{name}}">{{this.label}}</label><input type="radio" name="{{name}}" value="{{this.value}}" /></p>
 	{{/each}}
@@ -264,11 +264,8 @@ formValues = {
 	                    	name: "gender",
 	                    	type: "formBoolean",
 	                    	label: "Gender",
-	                    	name:"gender",
 	                        label1: "Male",
-	                        value1: "1",
 	                        label2: "Female",
-	                        value2: "2",
 	                        length: 1,
 	                        required: true,
 	                        error: "string",
@@ -278,7 +275,6 @@ formValues = {
 	                    	name: "language",
 	                    	type: "formText",
 	                    	label: "Native Language",
-	                    	name: "language",
 	                    	value: "",
 	                    	length: 256,
 	                    	required: true,
@@ -318,8 +314,178 @@ formValues = {
 	        ]
 	    },
 	    {
-	    	name:"Page 2"
-	    	
+	    	name: "Contact",
+	    	title: "Contact Information",
+	    	sections: [
+	    		{
+	    			fields: [
+	    				{
+	    					name: "nameFirst",
+	                    	type: "formText",
+	                    	label: "First Name",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	    				},
+	    				{
+	    					name: "nameMiddle",
+	                    	type: "formText",
+	                    	label: "Middle Name",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	    				},
+	    				{
+	    					name: "nameLast",
+	                    	type: "formText",
+	                    	label: "Last Name",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	    				},
+	    				{
+	    					name: "nameMaiden",
+	                    	type: "formText",
+	                    	label: "Maiden Name",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	    				}
+	    			]
+	    		},
+	    		{
+	    			name: "Permanent",
+	                title: "Permanent Address",
+	                fields: [
+	                	{
+	                		name: "perm_addr",
+	                    	type: "formText",
+	                    	label: "Street Address",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	                	},
+	                	{
+	                		name: "perm_location",
+	                    	type: "formLocation",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	                	},
+	                	{
+	                		name: "perm_zip",
+	                    	type: "formText",
+	                    	label: "Zip Code",
+	                    	value: "",
+	                    	length: 10,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	                	}
+	                ]
+	           },
+	           {
+	    			name: "Mailing",
+	                title: "Mailing Address",
+	                fields: [
+	                	{
+	                		name: "mail_addr",
+	                    	type: "formText",
+	                    	label: "Street Address",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	                	},
+	                	{
+	                		name: "mail_location",
+	                    	type: "formLocation",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	                	},
+	                	{
+	                		name: "mail_zip",
+	                    	type: "formText",
+	                    	label: "Zip Code",
+	                    	value: "",
+	                    	length: 10,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	                	},
+	                	{
+	                		name: "county",
+	                    	type: "formText",
+	                    	label: "County",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	                	},
+	                	{
+	                		name: "township",
+	                    	type: "formText",
+	                    	label: "Township",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: false,
+	                    	error: "string",
+	                    	show: true
+	                	}
+	                ]
+	           },
+	           {
+	    			name: "Phone",
+	                title: "Phone",
+	                fields: [
+	                	{
+	                		name: "home",
+	                    	type: "formPhone",
+	                    	label: "Home Phone",
+	                    	value: "",
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	                	},
+	                	{
+	                		name: "cell",
+	                    	type: "formPhone",
+	                    	label: "Cell Phone",
+	                    	value: "",
+	                    	required: false,
+	                    	error: "string",
+	                    	show: true
+	                	},
+	                	{
+	                		name: "conf_info",
+	                        type: "formCheckbox",
+	                        label: "Make my information confidential",
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                	}
+	                ]
+	           }
+	    	]
 	    },
 	    {
 	    	name:"Page 3"
