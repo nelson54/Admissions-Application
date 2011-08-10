@@ -20,7 +20,27 @@
 	</body>
 </html>
 
-<script id="section-template" type="text/x-handlebars-template" title="formPage">
+<script id="form-page-template" type="text/x-handlebars-template" title="formPage">
+	<div>
+		<header>
+			<h1>{{title}}</h1>
+		</header>
+		<div>
+			{{#each paragraphs}}
+				<p>{{this}}</p>
+			{{/each}}
+			<ul>
+				{{#each listItems}}
+				<li>{{this}}</li>
+				{{/each}}
+			</ul>
+			{{subheader}}
+
+		</div>
+	</div>
+</script>
+
+<script id="form-page-template" type="text/x-handlebars-template" title="formPage">
 	<div>
 		<header>
 			<h1>{{title}}</h1>
@@ -35,9 +55,13 @@
 	</div>
 </script>
 
+<script id="form-radiolist-template" type="text/x-handlebars-template" title="navigation">
+
+</script>
+
 <script id="section-template" type="text/x-handlebars-template" title="formSection">
-	<fieldset class="resume-form-section">
-		<legend>{{title}}</legend>
+	<h3>{{title}}</h3>
+	{{#if subheader}}<p><em>{{subheader}}</em></p>{{/if}}
 		<ul>
 			{{#each fieldsHtml}}
 			<li>
@@ -45,7 +69,12 @@
 			</li>
 			{{/each}}
 		</ul>
-	</fieldset>
+</script>
+
+<script id="form-page-template" type="text/x-handlebars-template" title="formAlert">
+	<div class="alert">
+			{{body}}
+	</div>
 </script>
 
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="formRadioList">
@@ -55,8 +84,61 @@
 	{{/each}}
 </script>
 
+<script id="form-checkboxlist-template" type="text/x-handlebars-template" title="formCheckboxList">
+	<label for="{{this.name}}">{{this.label}}</label><br />
+	{{#each elements}}
+		<input type="checkbox" name="{{this.name}}" value="{{this.value}}" /><label for="{{this.name}}">{{this.label}}</label>
+	{{/each}}
+</script>
+
+<script id="form-option-template" type="text/x-handlebars-template" title="formOption">
+	<p><label for="{{name}}">{{this.label}}</label><br />
+	<select name="{{name}}">
+	{{#each options}}
+		<option value="{{this.value}}">{{this.title}}</option>
+	{{/each}}</p>
+	</select>
+</script>
+
 <script id="form-checkbox-template" type="text/x-handlebars-template" title="formCheckbox">
 		<p><label>{{this.label}}</label><input type="checkbox" name="{{name}}" value="{{this.value}}" /></p>
+</script>
+
+<script id="form-dateRange-template" type="text/x-handlebars-template" title="formDateRange">
+		<p>
+			<label>{{this.label}}</label><br />
+			<label class="secondry" for="{{fromName}}">From</label>
+			<input type="text" class="date" name="{{fromName}}" value="{{this.fromValue}}" />
+			<label class="secondry" for="{{toName}}">To</label>
+			<input type="text" class="date" name="{{toName}}" value="{{this.toValue}}" /><label class="format">yyyy-mm-dd</label>
+		</p>
+</script>
+
+<script id="form-dateRange-template" type="text/x-handlebars-template" title="formLocation">
+		<p>
+			<label>{{this.label}}</label><br />
+			<input type="text" class="date" name="{{fromName}}" value="{{this.fromValue}}" />, 
+			<select></select>
+		</p>
+</script>
+
+<script id="form-date-template" type="text/x-handlebars-template" title="formDate">
+		<p>
+			<label>{{this.label}}</label>
+			<input type="text" class="date" name="{{name}}" value="{{this.Value}}" />
+			<label class="format">yyyy-mm-dd</label>
+		</p>
+</script>
+
+<script id="form-boolean-template" type="text/x-handlebars-template" title="formBoolean">
+		<p><label>{{this.label}}</label><br />
+		<input type="radio" value="{{#if value1}}{{value1}}{{else}}1{{/if}}" name="{{name}}" /><label>{{#if value1}}{{label1}}{{else}}Yes{{/if}}</label>
+		<input type="radio" value="{{#if value1}}{{value1}}{{else}}0{{/if}}" name="{{name}}" /><label>{{#if value1}}{{label2}}{{else}}No{{/if}}</label>
+</script>
+
+<script id="form-phone-template" type="text/x-handlebars-template" title="formPhone">
+		<p><label>{{this.label}}</label><br />
+		(<input name="{{name}}-phone-1" type="text" maxlength="3"  size="2"  />)<input name="{{name}}-phone-2" type="text" maxlength="3"  size="2"  />-<input name="{{name}}-phone-3" type="text" maxlength="4"  size="3"  /></p>
 </script>
 
 <script id="form-text-template" type="text/x-handlebars-template" title="formText">
@@ -69,14 +151,16 @@
 <script type="text/javascript">
 
 formValues = {
-    pages: {
-    	"Personal_Information" : {
+    pages: [
+    	{
+    		name:"Personal_Information",
 	        title: "Personal Information",
-	        sections: {
-	            "Student_Type": {
+	        sections: [
+	            {
+	            	name: "Student_Type",
 	                title: "Student Type - Check Only One",
-	                fields: {
-	                    "stdnt_type": {
+	                fields: [
+	                    {
 	                    	name:"stdnt_type",
 	                        type: "formRadioList",
 	                        elements: [ {label:"Associate Degree Student", value:"assoc", name:"stdnt_type"}, {label:"Bachelor Degree Student", value:"bach", name:"stdnt_type"}, {label:"Certificate Student", value:"cert", name:"stdnt_type"}, {label:"Non-degree Student", value:"nondeg", name:"stdnt_type"}, {label:"High School Student", value:"highsch", name:"stdnt_type"}, {label:"Guest Student", value:"guest", name:"stdnt_type"}, {label:"Apprenticeship Program",value:"apprent", name:"stdnt_type"}, {label:"Continuing Education Units (CEU)",value:"ceu", name:"stdnt_type"}],
@@ -85,13 +169,14 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    }
-	                }
+	                ]
 	            },
-	            "Student_Status": {
+	            {
+	            	name: "Student_Status",
 	                title: "Student Status - Check all that apply",
-	                fields: {
-	                    "stts_frmer": {
-	                    	name: "stdnt_type",
+	                fields: [
+	                    {
+	                    	name: "stts_frmer",
 	                        type: "formCheckbox",
 	                        label: "Former Student",
 	                        value: "",
@@ -100,7 +185,8 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "stts_othCllge": {
+	                    {
+	                    	name: "stts_othCllge",
 	                        type: "formCheckbox",
 	                        label: "Attended another college",
 	                        value: "",
@@ -109,7 +195,8 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "stts_frstCllge": {
+	                    {
+	                    	name: "stts_frstCllge",
 	                        type: "formCheckbox",
 	                        label: "First time in any college",
 	                        value: "",
@@ -118,7 +205,8 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "stts_inatStdnt": {
+	                    {
+	                    	name: "stts_inatStdnt",
 	                        type: "formCheckbox",
 	                        label: "International student",
 	                        value: "",
@@ -127,7 +215,8 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "stts_permAln": {
+	                    {
+	                    	name: "stts_permAln",
 	                        type: "formCheckbox",
 	                        label: "A permanent resident alien",
 	                        value: "",
@@ -136,70 +225,183 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    }
-	                }
+	                ]
 	            },
-	            "Identification": {
+	            {
+	            	name: "Identification",
 	                title: "Identification",
-	                fields: {
-	                    "smc_id": {
+	                fields: [
+	                    {
+	                    	name: "smc_id",
 	                        type: "formText",
 	                        label: "SMC Student ID",
-	                        name: "smc_id",
 	                        value: "",
 	                        length: 32,
 	                        required: true,
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "birthdate": {
-	                        type: "formText",
+	                    {
+	                    	name: "birthdate",
+	                        type: "formDate",
 	                        label: "Birth Date",
-	                        name: "birthdate",
 	                        value: "",
 	                        length: 10,
 	                        required: true,
 	                        error: "string",
 	                        show: true
+	                    },
+	                    {
+	                    	name: "birthPlace",
+	                    	type: "formLocation",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
+	                    },
+	                    {
+	                    	name: "gender",
+	                    	type: "formBoolean",
+	                    	label: "Gender",
+<<<<<<< Updated upstream
+	                        label1:"",
+	                        value1:"",
+	                        label2:"",
+	                        value2:"",
+=======
+	                    	name:"gender",
+	                        label1: "Male",
+	                        value1: "1",
+	                        label2: "Female",
+	                        value2: "2",
+>>>>>>> Stashed changes
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    {
+	                    	name: "language",
+	                    	type: "formText",
+	                    	label: "Native Language",
+	                    	name: "language",
+	                    	value: "",
+	                    	length: 256,
+	                    	required: true,
+	                    	error: "string",
+	                    	show: true
 	                    }
-	                }
+	                    
+	                ]
+	            },
+	            {
+	            	name: "Ethnic",
+	                title: "Ethnic Background Information",
+	                fields: [
+	                	{
+	                		name: "race_ltno",
+	                    	type: "formBoolean",
+	                    	label: "Are you Hispanic/Latino?",
+	                        elements: [{label: "Yes", value: "1", name: "race_ltno"}, {label: "No", value: "2", name: "race_ltno"}],
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    },
+	                    {
+	                    	name: "race",
+	                    	type: "formCheckboxList",
+	                        label: "Regardless of your answer to the prior question, please indicate how you identify yourself. (Check all that apply)",
+	                        elements: [{label: "Black or African American", value: "", name: "race_afrAm"}, {label: "Asian", value: "", name: "race_asian"}, {label: "Native Hawaiian or Other Pacific Islander", value: "", name: "race_hwii"}, {label: "American Indian or Alaska Native", value: "", name: "race_amInd"}, {label: "White", value: "", name:"race_whte"}, {label: "Non-Resident Alien", value: "", name: "race_nResAln"}],
+	                        value: "",
+	                        length: 1,
+	                        required: true,
+	                        error: "string",
+	                        show: true
+	                    }
+	                ]
 	            }
-	        }
+	        ]
+	    },
+	    {
+	    	name:"Page 2"
+	    	
+	    },
+	    {
+	    	name:"Page 3"
+	    	
 	    }
-    }
+    ]
 };
 
-Page = function ( params, templateFactory ){
-	this.addSection = function (section, title){
-		this.sections[title] = new Section(section, templateFactory);
+Navigation = function ( params, templateFactory ){
+	this.render = function (){
+		$("body").append(this.order[0].render());
+		//return( this.template.render(this) );
 	}
 	
-	this.render = function (){
-		for (section in this.sections){
-			this.sectionsHtml.push( this.sections[section].render() )
-		}
-		return( this.template.render(this) );
+	this.addPage = function ( params , templateFactory ){
+		this.pages[ params.name ] = new Page(params, templateFactory);
+		this.order.push( this.pages[ params.name ] );
+	}
+	
+	this.setPage = function ( page ){
+		this.currentPage = this.pages[ page ];
+		this.render();
 	}
 	
 	this.getTemplate = function(){
 		this.template = templateFactory.getTemplate(this.type)
 	}
 	
-	this.title = params.title;
-	this.sectionsHtml = []
-	this.type = "formPage";
-	this.sections = {};
+	this.pages = new Object();
+	this.order = new Array();
+	this.currentPage = this.firstPage;
+	this.type = "navigation";
 	
+	this.templateFactory = templateFactory;
+	this.getTemplate();
+	
+	for( page in params.pages ){
+		this.addPage(params.pages[page], templateFactory);
+	};
+};
+
+Page = function ( params ){
+	this.self = self = this;
+	
+	this.addSection = function (section, title){
+		this.sections[section.name] = new Section(section, templateFactory);
+	};
+	
+	this.render = function (){
+		for (section in this.sections){
+			this.sectionsHtml.push( this.sections[section].render() );
+		};
+		return( this.template.render(this) );
+	};
+	
+	this.getTemplate = function(){
+		this.template = templateFactory.getTemplate(this.type);
+	};
+	
+	this.title = params.title;
+	this.sectionsHtml = [];
+	this.type = "formPage";
 	_.extend(this, params);
 	
-	for(section in params.sections){
-		this.addSection(params.sections[section], section, templateFactory)
-	}
+	this.sections = new Object();
 	
+	_.map(params.sections, this.addSection, self);
+
 	this.templateFactory = templateFactory;
 	this.getTemplate();
 }
 
 Section = function (params, templateFactory){
+	this.self = self = this;
+	
 	this.render = function (){
 		for (field in this.fields){
 			this.fieldsHtml.push( this.fields[field].render() )
@@ -207,8 +409,8 @@ Section = function (params, templateFactory){
 		return( this.template.render(this) );
 	}
 	
-	this.addField = function (field, title){
-		this.fields[title] = new Field(field, templateFactory);
+	this.addField = function (field){
+		this.fields[field.name] = new Field(field, templateFactory);
 	}
 	
 	this.getTemplate = function(){
@@ -217,14 +419,13 @@ Section = function (params, templateFactory){
 	
 	this.title = params.title;
 	this.type = "formSection";
-	this.fields = {};
-	this.fieldsHtml = [];
+	this.fieldsHtml = new Array();
 	
 	_.extend(this, params);
 	
-	for(field in params.fields){
-		this.addField(params.fields[field], field);
-	}
+	this.fields = new Object();
+	
+	_.map(params.fields, this.addField, self);
 	
 	this.templateFactory = templateFactory;
 	this.getTemplate();
@@ -252,7 +453,7 @@ Field = function ( params , templateFactory){
 	
 	this.templateFactory = templateFactory;
 	this.getTemplate();
-}
+};
 
 TemplateFactory = function(TemplateConstructor){
 	this.getTemplate = function(type){
@@ -268,7 +469,7 @@ TemplateFactory = function(TemplateConstructor){
 	})
 	
 	this.templates = templates;
-}
+};
 
 Template = function ( source ) {
 	this.source = source;
@@ -277,15 +478,10 @@ Template = function ( source ) {
 	this.render = function (context) {
 	    return ( this.template(context) );
 	}
-}
+};
 
 templateFactory = new TemplateFactory(Template);
 
-<<<<<<< HEAD
-persInfoPage = new Page(formValues.pages.Personal_Information, templateFactory);
-=======
-stdntTypeSection = new Section(formValues.pages.Personal_Information.sections.Student_Type, templateFactory);
->>>>>>> a00ff0f7d3ac6e4b45df0b2223a94da2f4e8e46a
-
-$("body").append(persInfoPage.render());
+navigation = new Navigation(formValues, templateFactory);
+navigation.render();
 </script>

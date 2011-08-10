@@ -132,8 +132,8 @@
 
 <script id="form-boolean-template" type="text/x-handlebars-template" title="formBoolean">
 		<p><label>{{this.label}}</label><br />
-		<input type="radio" value="1" name="{{name}}" /><label>Yes</label>
-		<input type="radio" value="0" name="{{name}}" /><label>No</label>
+		<input type="radio" value="{{#if value1}}{{value1}}{{else}}1{{/if}}" name="{{name}}" /><label>{{#if value1}}{{label1}}{{else}}Yes{{/if}}</label>
+		<input type="radio" value="{{#if value1}}{{value1}}{{else}}0{{/if}}" name="{{name}}" /><label>{{#if value1}}{{label2}}{{else}}No{{/if}}</label>
 </script>
 
 <script id="form-phone-template" type="text/x-handlebars-template" title="formPhone">
@@ -264,10 +264,11 @@ formValues = {
 	                    	name: "gender",
 	                    	type: "formBoolean",
 	                    	label: "Gender",
-	                        label1:"",
-	                        value1:"",
-	                        label2:"",
-	                        value2:"",
+	                    	name:"gender",
+	                        label1: "Male",
+	                        value1: "1",
+	                        label2: "Female",
+	                        value2: "2",
 	                        length: 1,
 	                        required: true,
 	                        error: "string",
