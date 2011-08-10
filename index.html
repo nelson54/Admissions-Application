@@ -20,7 +20,27 @@
 	</body>
 </html>
 
-<script id="page-template" type="text/x-handlebars-template" title="formPage">
+<script id="form-page-template" type="text/x-handlebars-template" title="formPage">
+	<div>
+		<header>
+			<h1>{{title}}</h1>
+		</header>
+		<div>
+			{{#each paragraphs}}
+				<p>{{this}}</p>
+			{{/each}}
+			<ul>
+				{{#each listItems}}
+				<li>{{this}}</li>
+				{{/each}}
+			</ul>
+			{{subheader}}
+
+		</div>
+	</div>
+</script>
+
+<script id="form-page-template" type="text/x-handlebars-template" title="formPage">
 	<div>
 		<header>
 			<h1>{{title}}</h1>
@@ -49,6 +69,12 @@
 			</li>
 			{{/each}}
 		</ul>
+</script>
+
+<script id="form-page-template" type="text/x-handlebars-template" title="formAlert">
+	<div class="alert">
+			{{body}}
+	</div>
 </script>
 
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="formRadioList">
@@ -125,14 +151,16 @@
 <script type="text/javascript">
 
 formValues = {
-    pages: {
-    	"Personal_Information" : {
+    pages: [
+    	{
+    		name:"Personal_Information",
 	        title: "Personal Information",
-	        sections: {
-	            "Student_Type": {
+	        sections: [
+	            {
+	            	name: "Student_Type",
 	                title: "Student Type - Check Only One",
-	                fields: {
-	                    "stdnt_type": {
+	                fields: [
+	                    {
 	                    	name:"stdnt_type",
 	                        type: "formRadioList",
 	                        elements: [ {label:"Associate Degree Student", value:"assoc", name:"stdnt_type"}, {label:"Bachelor Degree Student", value:"bach", name:"stdnt_type"}, {label:"Certificate Student", value:"cert", name:"stdnt_type"}, {label:"Non-degree Student", value:"nondeg", name:"stdnt_type"}, {label:"High School Student", value:"highsch", name:"stdnt_type"}, {label:"Guest Student", value:"guest", name:"stdnt_type"}, {label:"Apprenticeship Program",value:"apprent", name:"stdnt_type"}, {label:"Continuing Education Units (CEU)",value:"ceu", name:"stdnt_type"}],
@@ -141,13 +169,14 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    }
-	                }
+	                ]
 	            },
-	            "Student_Status": {
+	            {
+	            	name: "Student_Status",
 	                title: "Student Status - Check all that apply",
-	                fields: {
-	                    "stts_frmer": {
-	                    	name: "stdnt_type",
+	                fields: [
+	                    {
+	                    	name: "stts_frmer",
 	                        type: "formCheckbox",
 	                        label: "Former Student",
 	                        value: "",
@@ -156,7 +185,8 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "stts_othCllge": {
+	                    {
+	                    	name: "stts_othCllge",
 	                        type: "formCheckbox",
 	                        label: "Attended another college",
 	                        value: "",
@@ -165,7 +195,8 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "stts_frstCllge": {
+	                    {
+	                    	name: "stts_frstCllge",
 	                        type: "formCheckbox",
 	                        label: "First time in any college",
 	                        value: "",
@@ -174,7 +205,8 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "stts_inatStdnt": {
+	                    {
+	                    	name: "stts_inatStdnt",
 	                        type: "formCheckbox",
 	                        label: "International student",
 	                        value: "",
@@ -183,7 +215,8 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "stts_permAln": {
+	                    {
+	                    	name: "stts_permAln",
 	                        type: "formCheckbox",
 	                        label: "A permanent resident alien",
 	                        value: "",
@@ -192,52 +225,56 @@ formValues = {
 	                        error: "string",
 	                        show: true
 	                    }
-	                }
+	                ]
 	            },
-	            "Identification": {
+	            {
+	            	name: "Identification",
 	                title: "Identification",
-	                fields: {
-	                    "smc_id": {
+	                fields: [
+	                    {
+	                    	name: "smc_id",
 	                        type: "formText",
 	                        label: "SMC Student ID",
-	                        name: "smc_id",
 	                        value: "",
 	                        length: 32,
 	                        required: true,
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "birthdate": {
+	                    {
+	                    	name: "birthdate",
 	                        type: "formDate",
 	                        label: "Birth Date",
-	                        name: "birthdate",
 	                        value: "",
 	                        length: 10,
 	                        required: true,
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "birthPlace": {
-	                    	type: "formLocation",
-	                    	label: "Birth Place",
+	                    {
 	                    	name: "birthPlace",
+	                    	type: "formLocation",
 	                    	value: "",
 	                    	length: 256,
 	                    	required: true,
 	                    	error: "string",
 	                    	show: true
 	                    },
-	                    "gender": {
+	                    {
+	                    	name: "gender",
 	                    	type: "formBoolean",
 	                    	label: "Gender",
-	                    	name:"gender",	                        
-	                        elements: [{label: "Male", value: "1", name: "gender"}, {label: "Female", value: "2", name: "gender"}],
+	                        label1:"",
+	                        value1:"",
+	                        label2:"",
+	                        value2:"",
 	                        length: 1,
 	                        required: true,
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "language": {
+	                    {
+	                    	name: "language",
 	                    	type: "formText",
 	                    	label: "Native Language",
 	                    	name: "language",
@@ -248,43 +285,46 @@ formValues = {
 	                    	show: true
 	                    }
 	                    
-	                }
+	                ]
 	            },
-	            "Ethnic": {
+	            {
+	            	name: "Ethnic",
 	                title: "Ethnic Background Information",
-	                fields: {
-	                	"race_ltno": {
+	                fields: [
+	                	{
+	                		name: "race_ltno",
 	                    	type: "formBoolean",
 	                    	label: "Are you Hispanic/Latino?",
-	                    	name:"race_ltno",
 	                        elements: [{label: "Yes", value: "1", name: "race_ltno"}, {label: "No", value: "2", name: "race_ltno"}],
 	                        length: 1,
 	                        required: true,
 	                        error: "string",
 	                        show: true
 	                    },
-	                    "race": {
+	                    {
+	                    	name: "race",
 	                    	type: "formCheckboxList",
 	                        label: "Regardless of your answer to the prior question, please indicate how you identify yourself. (Check all that apply)",
 	                        elements: [{label: "Black or African American", value: "", name: "race_afrAm"}, {label: "Asian", value: "", name: "race_asian"}, {label: "Native Hawaiian or Other Pacific Islander", value: "", name: "race_hwii"}, {label: "American Indian or Alaska Native", value: "", name: "race_amInd"}, {label: "White", value: "", name:"race_whte"}, {label: "Non-Resident Alien", value: "", name: "race_nResAln"}],
-	                        name: "race",
 	                        value: "",
 	                        length: 1,
 	                        required: true,
 	                        error: "string",
 	                        show: true
-	                    }	                    
-	                }
+	                    }
+	                ]
 	            }
-	        }
+	        ]
 	    },
-	    "Page 2" : {
+	    {
+	    	name:"Page 2"
 	    	
 	    },
-	    "Page 3" : {
+	    {
+	    	name:"Page 3"
 	    	
 	    }
-    }
+    ]
 };
 
 Navigation = function ( params, templateFactory ){
@@ -320,9 +360,11 @@ Navigation = function ( params, templateFactory ){
 	};
 };
 
-Page = function ( params, templateFactory ){
+Page = function ( params ){
+	this.self = self = this;
+	
 	this.addSection = function (section, title){
-		this.sections[title] = new Section(section, templateFactory);
+		this.sections[section.name] = new Section(section, templateFactory);
 	};
 	
 	this.render = function (){
@@ -339,19 +381,19 @@ Page = function ( params, templateFactory ){
 	this.title = params.title;
 	this.sectionsHtml = [];
 	this.type = "formPage";
-	this.sections = new Object();
-	
 	_.extend(this, params);
 	
-	for(section in params.sections){
-		this.addSection(params.sections[section], section, templateFactory)
-	};
+	this.sections = new Object();
 	
+	_.map(params.sections, this.addSection, self);
+
 	this.templateFactory = templateFactory;
 	this.getTemplate();
 }
 
 Section = function (params, templateFactory){
+	this.self = self = this;
+	
 	this.render = function (){
 		for (field in this.fields){
 			this.fieldsHtml.push( this.fields[field].render() )
@@ -359,8 +401,8 @@ Section = function (params, templateFactory){
 		return( this.template.render(this) );
 	}
 	
-	this.addField = function (field, title, templateFactory){
-		this.fields[title] = new Field(field, templateFactory);
+	this.addField = function (field){
+		this.fields[field.name] = new Field(field, templateFactory);
 	}
 	
 	this.getTemplate = function(){
@@ -369,14 +411,13 @@ Section = function (params, templateFactory){
 	
 	this.title = params.title;
 	this.type = "formSection";
-	this.fields = {};
-	this.fieldsHtml = [];
+	this.fieldsHtml = new Array();
 	
 	_.extend(this, params);
 	
-	for(field in params.fields){
-		this.addField(params.fields[field], field, templateFactory);
-	}
+	this.fields = new Object();
+	
+	_.map(params.fields, this.addField, self);
 	
 	this.templateFactory = templateFactory;
 	this.getTemplate();
