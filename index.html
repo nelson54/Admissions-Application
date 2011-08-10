@@ -35,6 +35,10 @@
 	</div>
 </script>
 
+<script id="form-radiolist-template" type="text/x-handlebars-template" title="navigation">
+
+</script>
+
 <script id="section-template" type="text/x-handlebars-template" title="formSection">
 	<h3>{{title}}</h3>
 	{{#if subheader}}<p><em>{{subheader}}</em></p>{{/if}}
@@ -283,36 +287,75 @@ formValues = {
 	                }
 	            }
 	        }
+	    },
+	    "Page 2" : {
+	    	
+	    },
+	    "Page 3" : {
+	    	
 	    }
     }
 };
 
-Page = function ( params, templateFactory ){
-	this.addSection = function (section, title){
-		this.sections[title] = new Section(section, templateFactory);
+Navigation = function ( params, templateFactory ){
+	this.render = function (){
+		$("body").append(this.order[0].render());
+		//return( this.template.render(this) );
 	}
 	
-	this.render = function (){
-		for (section in this.sections){
-			this.sectionsHtml.push( this.sections[section].render() )
-		}
-		return( this.template.render(this) );
+	this.addPage = function ( params , templateFactory ){
+		this.pages[ params.name ] = new Page(params, templateFactory);
+		this.order.push( this.pages[ params.name ] );
+	}
+	
+	this.setPage = function ( page ){
+		this.currentPage = this.pages[ page ];
+		this.render();
 	}
 	
 	this.getTemplate = function(){
 		this.template = templateFactory.getTemplate(this.type)
 	}
 	
+	this.pages = new Object();
+	this.order = new Array();
+	this.currentPage = this.firstPage;
+	this.type = "navigation";
+	
+	this.templateFactory = templateFactory;
+	this.getTemplate();
+	
+	for( page in params.pages ){
+		this.addPage(params.pages[page], templateFactory);
+	};
+};
+
+Page = function ( params, templateFactory ){
+	this.addSection = function (section, title){
+		this.sections[title] = new Section(section, templateFactory);
+	};
+	
+	this.render = function (){
+		for (section in this.sections){
+			this.sectionsHtml.push( this.sections[section].render() );
+		};
+		return( this.template.render(this) );
+	};
+	
+	this.getTemplate = function(){
+		this.template = templateFactory.getTemplate(this.type);
+	};
+	
 	this.title = params.title;
-	this.sectionsHtml = []
+	this.sectionsHtml = [];
 	this.type = "formPage";
-	this.sections = {};
+	this.sections = new Object();
 	
 	_.extend(this, params);
 	
 	for(section in params.sections){
 		this.addSection(params.sections[section], section, templateFactory)
-	}
+	};
 	
 	this.templateFactory = templateFactory;
 	this.getTemplate();
@@ -326,7 +369,7 @@ Section = function (params, templateFactory){
 		return( this.template.render(this) );
 	}
 	
-	this.addField = function (field, title){
+	this.addField = function (field, title, templateFactory){
 		this.fields[title] = new Field(field, templateFactory);
 	}
 	
@@ -342,7 +385,7 @@ Section = function (params, templateFactory){
 	_.extend(this, params);
 	
 	for(field in params.fields){
-		this.addField(params.fields[field], field);
+		this.addField(params.fields[field], field, templateFactory);
 	}
 	
 	this.templateFactory = templateFactory;
@@ -371,7 +414,7 @@ Field = function ( params , templateFactory){
 	
 	this.templateFactory = templateFactory;
 	this.getTemplate();
-}
+};
 
 TemplateFactory = function(TemplateConstructor){
 	this.getTemplate = function(type){
@@ -387,7 +430,7 @@ TemplateFactory = function(TemplateConstructor){
 	})
 	
 	this.templates = templates;
-}
+};
 
 Template = function ( source ) {
 	this.source = source;
@@ -396,11 +439,10 @@ Template = function ( source ) {
 	this.render = function (context) {
 	    return ( this.template(context) );
 	}
-}
+};
 
 templateFactory = new TemplateFactory(Template);
 
-persInfoPage = new Page(formValues.pages.Personal_Information, templateFactory);
-
-$("body").append(persInfoPage.render());
+navigation = new Navigation(formValues, templateFactory);
+navigation.render();
 </script>
