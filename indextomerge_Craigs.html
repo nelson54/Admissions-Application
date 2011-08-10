@@ -20,7 +20,7 @@
 	</body>
 </html>
 
-<script id="form-page-template" type="text/x-handlebars-template" title="landingPage">
+<script id="form-page-template" type="text/x-handlebars-template" title="formPage">
 	<div>
 		<header>
 			<h1>{{title}}</h1>
@@ -46,7 +46,6 @@
 			<h1>{{title}}</h1>
 		</header>
 		<div>
-		{{navigation}}
 			<form action="" method="" id="newResumeForm">
 				{{#each sectionsHtml}}
 					{{{this}}}
@@ -57,14 +56,7 @@
 </script>
 
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="navigation">
-<div>
-	<h2>Navigation</h2>
-	<ul>
-		{{#each order}}
-		<li><a href="#{{this.name}}">{{this.name}}</a></li>
-		{{/each}}
-	</ul>
-</div>
+
 </script>
 
 <script id="section-template" type="text/x-handlebars-template" title="formSection">
@@ -132,7 +124,7 @@
 
 <script id="form-date-template" type="text/x-handlebars-template" title="formDate">
 		<p>
-			<label>{{this.label}}</label><br />
+			<label>{{this.label}}</label>
 			<input type="text" class="date" name="{{name}}" value="{{this.Value}}" />
 			<label class="format">yyyy-mm-dd</label>
 		</p>
@@ -140,8 +132,8 @@
 
 <script id="form-boolean-template" type="text/x-handlebars-template" title="formBoolean">
 		<p><label>{{this.label}}</label><br />
-		<input type="radio" value="1" name="{{name}}" /><label>Yes</label>
-		<input type="radio" value="0" name="{{name}}" /><label>No</label>
+		<input type="radio" value="{{#if value1}}{{value1}}{{else}}1{{/if}}" name="{{name}}" /><label>{{#if value1}}{{label1}}{{else}}Yes{{/if}}</label>
+		<input type="radio" value="{{#if value1}}{{value1}}{{else}}0{{/if}}" name="{{name}}" /><label>{{#if value1}}{{label2}}{{else}}No{{/if}}</label>
 </script>
 
 <script id="form-phone-template" type="text/x-handlebars-template" title="formPhone">
@@ -150,7 +142,7 @@
 </script>
 
 <script id="form-text-template" type="text/x-handlebars-template" title="formText">
-		<p><label>{{this.label}}</label><br /><input type="text" name="{{name}}" value="{{this.value}}" /></p>
+		<p><label>{{this.label}}</label><input type="text" name="{{name}}" value="{{this.value}}" /></p>
 </script>
 
 <script type="text/javascript" src="mustache.js">//</script>
@@ -262,7 +254,6 @@ formValues = {
 	                    {
 	                    	name: "birthPlace",
 	                    	type: "formLocation",
-	                    	label: "Birth Place",
 	                    	value: "",
 	                    	length: 256,
 	                    	required: true,
@@ -273,10 +264,11 @@ formValues = {
 	                    	name: "gender",
 	                    	type: "formBoolean",
 	                    	label: "Gender",
-	                        label1:"",
-	                        value1:"",
-	                        label2:"",
-	                        value2:"",
+	                    	name:"gender",
+	                        label1: "Male",
+	                        value1: "1",
+	                        label2: "Female",
+	                        value2: "2",
 	                        length: 1,
 	                        required: true,
 	                        error: "string",
@@ -324,183 +316,6 @@ formValues = {
 	                ]
 	            }
 	        ]
-	    },
-	    {
-	    	name: "Contact",
-	    	title: "Contact Information",
-	    	sections: [
-	    		{
-	    			name: "Name_Info",
-	    			fields: [
-	    				{
-	    					name: "nameFirst",
-	                    	type: "formText",
-	                    	label: "First Name",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	    				},
-	    				{
-	    					name: "nameMiddle",
-	                    	type: "formText",
-	                    	label: "Middle Name",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	    				},
-	    				{
-	    					name: "nameLast",
-	                    	type: "formText",
-	                    	label: "Last Name",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	    				},
-	    				{
-	    					name: "nameMaiden",
-	                    	type: "formText",
-	                    	label: "Maiden Name",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	    				}
-	    			]
-	    		},
-	    		{
-	    			name: "Permanent",
-	                title: "Permanent Address",
-	                fields: [
-	                	{
-	                		name: "perm_addr",
-	                    	type: "formText",
-	                    	label: "Street Address",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "perm_location",
-	                    	type: "formLocation",
-	                    	label:"Permenant City/State",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "perm_zip",
-	                    	type: "formText",
-	                    	label: "Zip Code",
-	                    	value: "",
-	                    	length: 10,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	}
-	                ]
-	           },
-	           {
-	    			name: "Mailing",
-	                title: "Mailing Address",
-	                fields: [
-	                	{
-	                		name: "mail_addr",
-	                    	type: "formText",
-	                    	label: "Street Address",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "mail_location",
-	                    	type: "formLocation",
-	                    	value: "",
-	                    	label: "Mailing City/State",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "mail_zip",
-	                    	type: "formText",
-	                    	label: "Zip Code",
-	                    	value: "",
-	                    	length: 10,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "county",
-	                    	type: "formText",
-	                    	label: "County",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "township",
-	                    	type: "formText",
-	                    	label: "Township",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: false,
-	                    	error: "string",
-	                    	show: true
-	                	}
-	                ]
-	           },
-	           {
-	    			name: "Phone",
-	                title: "Phone",
-	                fields: [
-	                	{
-	                		name: "home",
-	                    	type: "formPhone",
-	                    	label: "Home Phone",
-	                    	value: "",
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "cell",
-	                    	type: "formPhone",
-	                    	label: "Cell Phone",
-	                    	value: "",
-	                    	required: false,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "conf_info",
-	                        type: "formCheckbox",
-	                        label: "Make my information confidential",
-	                        value: "",
-	                        length: 1,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                	}
-	                ]
-	           }
-	    	]
 	    },
 	    {
     		name:"Education",
@@ -777,18 +592,18 @@ formValues = {
 	                ]
 	            }
 	        ]
+	    },
+	    {
+	    	name:"Page 3"
+	    	
 	    }
     ]
 };
 
 Navigation = function ( params, templateFactory ){
 	this.render = function (){
-		if (this.currentPage == undefined){
-			this.currentPage = this.order[0];
-		}
-		$("body").empty();
-		$("body").append(this.currentPage.render());
-		$("body").prepend( this.template.render(this) );
+		$("body").append(this.order[0].render());
+		//return( this.template.render(this) );
 	}
 	
 	this.addPage = function ( params , templateFactory ){
@@ -807,6 +622,7 @@ Navigation = function ( params, templateFactory ){
 	
 	this.pages = new Object();
 	this.order = new Array();
+	this.currentPage = this.firstPage;
 	this.type = "navigation";
 	
 	this.templateFactory = templateFactory;
@@ -817,16 +633,6 @@ Navigation = function ( params, templateFactory ){
 	};
 };
 
-HashListener = function(navigation){
-	this.navigation = navigation;
-	
-	this.changeHandler = changeHandler = function(){
-		this.navigation.setPage(location.hash.replace("#", ""));
-	}
-	
-	changeHandler();
-}
-
 Page = function ( params ){
 	this.self = self = this;
 	
@@ -835,7 +641,6 @@ Page = function ( params ){
 	};
 	
 	this.render = function (){
-		this.sectionsHtml = new Array();
 		for (section in this.sections){
 			this.sectionsHtml.push( this.sections[section].render() );
 		};
@@ -943,7 +748,5 @@ Template = function ( source ) {
 templateFactory = new TemplateFactory(Template);
 
 navigation = new Navigation(formValues, templateFactory);
-hashListener = new HashListener(navigation);
-
-window.onhashchange = hashListener.changeHandler;
+navigation.render();
 </script>
