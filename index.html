@@ -20,7 +20,7 @@
 	</body>
 </html>
 
-<script id="form-page-template" type="text/x-handlebars-template" title="formPage">
+<script id="form-page-template" type="text/x-handlebars-template" title="landingPage">
 	<div>
 		<header>
 			<h1>{{title}}</h1>
@@ -46,6 +46,7 @@
 			<h1>{{title}}</h1>
 		</header>
 		<div>
+		{{navigation}}
 			<form action="" method="" id="newResumeForm">
 				{{#each sectionsHtml}}
 					{{{this}}}
@@ -56,7 +57,14 @@
 </script>
 
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="navigation">
-
+<div>
+	<h2>Navigation</h2>
+	<ul>
+		{{#each order}}
+		<li><a href="#{{this.name}}">{{this.name}}</a></li>
+		{{/each}}
+	</ul>
+</div>
 </script>
 
 <script id="section-template" type="text/x-handlebars-template" title="formSection">
@@ -78,7 +86,7 @@
 </script>
 
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="formRadioList">
-	{{#if label}}<label for="{{name}}">{{label}}</label>{{/if}}
+	<label for="{{name}}"></label>
 	{{#each elements}}
 		<p><label for="{{name}}">{{this.label}}</label><input type="radio" name="{{name}}" value="{{this.value}}" /></p>
 	{{/each}}
@@ -124,7 +132,7 @@
 
 <script id="form-date-template" type="text/x-handlebars-template" title="formDate">
 		<p>
-			<label>{{this.label}}</label>
+			<label>{{this.label}}</label><br />
 			<input type="text" class="date" name="{{name}}" value="{{this.Value}}" />
 			<label class="format">yyyy-mm-dd</label>
 		</p>
@@ -132,8 +140,8 @@
 
 <script id="form-boolean-template" type="text/x-handlebars-template" title="formBoolean">
 		<p><label>{{this.label}}</label><br />
-		<input type="radio" value="{{#if value1}}{{value1}}{{else}}1{{/if}}" name="{{name}}" /><label>{{#if value1}}{{label1}}{{else}}Yes{{/if}}</label>
-		<input type="radio" value="{{#if value1}}{{value1}}{{else}}0{{/if}}" name="{{name}}" /><label>{{#if value1}}{{label2}}{{else}}No{{/if}}</label>
+		<input type="radio" value="1" name="{{name}}" /><label>Yes</label>
+		<input type="radio" value="0" name="{{name}}" /><label>No</label>
 </script>
 
 <script id="form-phone-template" type="text/x-handlebars-template" title="formPhone">
@@ -142,7 +150,7 @@
 </script>
 
 <script id="form-text-template" type="text/x-handlebars-template" title="formText">
-		<p><label>{{this.label}}</label><input type="text" name="{{name}}" value="{{this.value}}" /></p>
+		<p><label>{{this.label}}</label><br /><input type="text" name="{{name}}" value="{{this.value}}" /></p>
 </script>
 
 <script type="text/javascript" src="mustache.js">//</script>
@@ -254,6 +262,7 @@ formValues = {
 	                    {
 	                    	name: "birthPlace",
 	                    	type: "formLocation",
+	                    	label: "Birth Place",
 	                    	value: "",
 	                    	length: 256,
 	                    	required: true,
@@ -264,8 +273,10 @@ formValues = {
 	                    	name: "gender",
 	                    	type: "formBoolean",
 	                    	label: "Gender",
-	                        label1: "Male",
-	                        label2: "Female",
+	                        label1:"",
+	                        value1:"",
+	                        label2:"",
+	                        value2:"",
 	                        length: 1,
 	                        required: true,
 	                        error: "string",
@@ -275,6 +286,7 @@ formValues = {
 	                    	name: "language",
 	                    	type: "formText",
 	                    	label: "Native Language",
+	                    	name: "language",
 	                    	value: "",
 	                    	length: 256,
 	                    	required: true,
@@ -378,6 +390,7 @@ formValues = {
 	                	{
 	                		name: "perm_location",
 	                    	type: "formLocation",
+	                    	label:"Permenant City/State",
 	                    	value: "",
 	                    	length: 256,
 	                    	required: true,
@@ -414,6 +427,7 @@ formValues = {
 	                		name: "mail_location",
 	                    	type: "formLocation",
 	                    	value: "",
+	                    	label: "Mailing City/State",
 	                    	length: 256,
 	                    	required: true,
 	                    	error: "string",
@@ -488,16 +502,20 @@ formValues = {
 	    	]
 	    },
 	    {
-	    	name:"Page 3"
-	    	
+	    	name:"Page_3",
+	    	title:"Page 3"
 	    }
     ]
 };
 
 Navigation = function ( params, templateFactory ){
 	this.render = function (){
-		$("body").append(this.order[0].render());
-		//return( this.template.render(this) );
+		if (this.currentPage == undefined){
+			this.currentPage = this.order[0];
+		}
+		$("body").empty();
+		$("body").append(this.currentPage.render());
+		$("body").prepend( this.template.render(this) );
 	}
 	
 	this.addPage = function ( params , templateFactory ){
@@ -516,7 +534,6 @@ Navigation = function ( params, templateFactory ){
 	
 	this.pages = new Object();
 	this.order = new Array();
-	this.currentPage = this.firstPage;
 	this.type = "navigation";
 	
 	this.templateFactory = templateFactory;
@@ -526,6 +543,16 @@ Navigation = function ( params, templateFactory ){
 		this.addPage(params.pages[page], templateFactory);
 	};
 };
+
+HashListener = function(navigation){
+	this.navigation = navigation;
+	
+	this.changeHandler = changeHandler = function(){
+		this.navigation.setPage(location.hash.replace("#", ""));
+	}
+	
+	changeHandler();
+}
 
 Page = function ( params ){
 	this.self = self = this;
@@ -642,5 +669,9 @@ Template = function ( source ) {
 templateFactory = new TemplateFactory(Template);
 
 navigation = new Navigation(formValues, templateFactory);
+hashListener = new HashListener(navigation);
+
+window.onhashchange = hashListener.changeHandler;
+
 navigation.render();
 </script>
