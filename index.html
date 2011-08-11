@@ -48,9 +48,13 @@
 		<div>
 		{{navigation}}
 			<form action="" method="" id="newResumeForm">
+				<input type="hidden" value="{{name}}" />
 				{{#each sectionsHtml}}
 					{{{this}}}
 				{{/each}}
+				<ul>
+					<input type="submit" value="Continue" />
+				</ul>
 			</form>
 		</div>
 	</div>
@@ -61,7 +65,7 @@
 	<h2>Navigation</h2>
 	<ul>
 		{{#each order}}
-		<li><a href="#{{this.name}}">{{this.name}}</a></li>
+		<li><a href="#!/{{this.name}}">{{this.name}}</a></li>
 		{{/each}}
 	</ul>
 </div>
@@ -77,6 +81,7 @@
 			</li>
 			{{/each}}
 		</ul>
+		
 </script>
 
 <script id="form-page-template" type="text/x-handlebars-template" title="formAlert">
@@ -156,6 +161,7 @@
 <script type="text/javascript" src="mustache.js">//</script>
 <script type="text/javascript" src="underscore.js">//</script>
 <script type="text/javascript" src="jquery-1.5.1.min.js">//</script>
+<script type="text/javascript" src="backbone.js">//</script>
 <script type="text/javascript">
 
 formValues = {
@@ -163,6 +169,7 @@ formValues = {
     	{
     		name:"Personal_Information",
 	        title: "Personal Information",
+	        type: "formPage",
 	        sections: [
 	            {
 	            	name: "Student_Type",
@@ -328,6 +335,7 @@ formValues = {
 	    {
 	    	name: "Contact",
 	    	title: "Contact Information",
+	    	type: "formPage",
 	    	sections: [
 	    		{
 	    			name: "Name_Info",
@@ -505,6 +513,7 @@ formValues = {
 	    {
     		name:"Education",
 	        title: "Education Information",
+	        type: "formPage",
 	        sections: [
 	            {
 					name:"Education_Information",
@@ -687,6 +696,7 @@ formValues = {
 	    {
     		name:"Emergency",
 	        title: "Emergency Information and Authorization",
+	        type: "formPage",
 	        sections: [
 	            {
 	            	name: "Main_Emergency_Contact",
@@ -781,11 +791,10 @@ formValues = {
     ]
 };
 
+
+
 Navigation = function ( params, templateFactory ){
 	this.render = function (){
-		if (this.currentPage == undefined){
-			this.currentPage = this.order[0];
-		}
 		$("body").empty();
 		$("body").append(this.currentPage.render());
 		$("body").prepend( this.template.render(this) );
@@ -941,10 +950,24 @@ Template = function ( source ) {
 	}
 };
 
+AppRouter = Backbone.Router.extend({
+    routes: {
+        "!/:page": "form", // matches http://example.com/#anything-here
+        "!/:page/:section": "form", // matches http://example.com/#anything-here
+		"*actions": "default"
+    },
+    form: function( page ){
+        navigation.setPage( page );
+    },
+    default: function(){
+    	router.navigate( "#!/"+navigation.order[0].name, true )
+    }
+});
+
 templateFactory = new TemplateFactory(Template);
 
 navigation = new Navigation(formValues, templateFactory);
-hashListener = new HashListener(navigation);
 
-window.onhashchange = hashListener.changeHandler;
+router = new AppRouter;
+Backbone.history.start();
 </script>
