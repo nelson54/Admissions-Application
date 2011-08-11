@@ -119,7 +119,13 @@
 			name : "unassignedLocationName",
 			value : { city : "" , state : "" },
 			"class" : "locationField",
-			template : "formLocation"
+			template : "formLocation",
+			errorMessage : "This field contains an error."
+		},
+		requireValidate : function(){
+			if( this.get("required") ){
+				return( (!this.get("value")["city"] == true) && (!this.get("value")["city"] == true) );
+			}
 		}
 	});
 	

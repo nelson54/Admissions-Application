@@ -14,6 +14,11 @@
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
+		<style>
+			label.error{display:block;}
+			
+		</style>
+		
 	</head>
 	<body>
 	</body>
@@ -132,6 +137,7 @@
 			<label>{{label}}</label><br />
 			<input type="text" class="date" name="{{name}}-city" value="{{value.city}}" />, 
 			<select name="{{value.city}}"></select>
+			{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
 		</p>
 </script>
 
@@ -821,16 +827,6 @@ Navigation = function ( params, templateFactory ){
 		this.addPage(params.pages[page], templateFactory);
 	};
 };
-
-HashListener = function(navigation){
-	this.navigation = navigation;
-	
-	this.changeHandler = changeHandler = function(){
-		this.navigation.setPage(location.hash.replace("#", ""));
-	}
-	
-	changeHandler();
-}
 
 Page = function ( params ){
 	this.self = self = this;
