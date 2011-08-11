@@ -22,7 +22,6 @@
 		},
 		reset : function(){
 			this.setValue( this.get("value") );
-			//this.render( );
 		},
 		isValid : function(){
 			this.set({ "invalid" : false });
@@ -35,7 +34,7 @@
 		requireValidate : function(){
 			if( this.get("required") ){
 				return( !this.get("value") == true );
-			}
+			};
 		},
 		minLengthValidate : function(){
 			if(this.get("minLength")){
@@ -71,8 +70,8 @@
 			name : "unassignedTextName",
 			title : "Unassigned",
 			value : "",
-			errorMessage : "This field contains an error.",
 			"class" : "text",
+			errorMessage : "This field contains an error.",
 			template : "formText"
 		}
 	});
@@ -141,10 +140,20 @@
 			label : "Unassigned option label",
 			title : "Unassigned",
 			name : "unassignedPhoneName",
-			value : "",
+			errorMessage : "This field contains an error.",
+			value : { num1 : "", num2 : "", num3 : "" },
 			options : new Array(),
 			"class" : "phone",
 			template : "formPhone"
+		},
+		setValue : function( num1, num2, num3 ){
+			this.set({ "currentValue" : { "num1" : num1, "num2" : num2, "num3" : num3 } });
+			return (value);
+		},
+		requireValidate : function(){
+			if( this.get("required") ){
+				return( (!this.get("num1") == true) && (!this.get("num2") == true) && (!this.get("num3") == true) );
+			}
 		}
 	});
 	
@@ -153,9 +162,10 @@
 			label : "Unassigned boolean label",
 			title : "Unassigned",
 			name : "unassignedBooleanName",
-			value : new Object(),
+			value : "",
 			options : [{label: "Yes", value:1}, {label: "No", value:0}],
 			"class" : "radio-list",
+			errorMessage : "This field contains an error.",
 			template : "formBoolean"
 		}
 	});
@@ -165,7 +175,8 @@
 			label : "Unassigned radio button list label",
 			title : "Unassigned",
 			name : "unassignedRadioListName",
-			value : new Object(),
+			value : "",
+			errorMessage : "This field contains an error.",
 			elements : new Array(),
 			"class" : "radio-list",
 			template : "formRadioList"
