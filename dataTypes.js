@@ -9,7 +9,10 @@
 			value : "Unassigned",
 			template : "formText",
 			errorMessage : "This field contains an error.",
-			selector : "",
+	    },
+	    initialize : function (){
+	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]"});
+	    	this.set({ "fieldHtml": this.render() });
 	    },
 		setValue : function( value ){
 			this.set({ "currentValue" : value });
@@ -22,6 +25,11 @@
 		},
 		reset : function(){
 			this.setValue( this.get("value") );
+		},
+		getValue : function(){
+			var curVal = $(this.get("selector")).val();
+			this.set({ "currentValue" : curVal });
+			return( curVal );
 		},
 		isValid : function(){
 			this.set({ "invalid" : false });
@@ -49,7 +57,7 @@
 		regexValidate : function(){
 			if(this.get("regex")){
 				var rexp = new RegExp( this.get("regex") );
-				return( !this.get("value").search(rexp) );
+				return( !this.get("value").match(rexp) );
 			}
 		}
 	});
@@ -61,6 +69,7 @@
 			title : "Unassigned",
 			value : "yyyy-mm-dd",
 			template : "formDate",
+			regex : /^\d{1,2}\/\d{1,2}\/\d{4}$/
 	    }
 	});
 	

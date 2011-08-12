@@ -107,6 +107,7 @@
 	{{#each elements}}
 		<input type="checkbox" name="{{this.name}}" value="{{this.value}}" /><label for="{{this.name}}">{{this.label}}</label>
 	{{/each}}
+	{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
 </script>
 
 <script id="form-option-template" type="text/x-handlebars-template" title="formSelect">
@@ -116,6 +117,8 @@
 		<option value="{{this.value}}">{{this.title}}</option>
 	{{/each}}</p>
 	</select>
+	{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
+	</p>
 </script>
 
 <script id="form-checkbox-template" type="text/x-handlebars-template" title="formCheckbox">
@@ -129,6 +132,7 @@
 			<input type="text" class="date" name="{{fromName}}" value="{{this.fromValue}}" />
 			<label class="secondry" for="{{toName}}">To</label>
 			<input type="text" class="date" name="{{toName}}" value="{{this.toValue}}" /><label class="format">yyyy-mm-dd</label>
+			{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
 		</p>
 </script>
 
@@ -146,6 +150,7 @@
 			<label>{{this.label}}</label><br />
 			<input type="text" class="date" name="{{name}}" value="{{this.Value}}" />
 			<label class="format">yyyy-mm-dd</label>
+			{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
 		</p>
 </script>
 
@@ -833,6 +838,7 @@ Page = function ( params ){
 	
 	this.addSection = function (section, title){
 		this.sections[section.name] = new Section(section, templateFactory);
+		_.extend( this.fields , this.sections[section.name].fields)
 	};
 	
 	this.render = function (){
@@ -847,12 +853,19 @@ Page = function ( params ){
 		this.template = templateFactory.getTemplate(this.type);
 	};
 	
+	this.updateValues = function(){
+		for ( field in this.fields ){
+			alert( field.getValue() );
+		}
+	}
+	
 	this.title = params.title;
 	this.sectionsHtml = [];
 	this.type = "formPage";
 	_.extend(this, params);
 	
 	this.sections = new Object();
+	this.fields = new Object();
 	
 	_.map(params.sections, this.addSection, self);
 
@@ -938,4 +951,6 @@ navigation = new Navigation(formValues, templateFactory);
 
 router = new AppRouter;
 Backbone.history.start();
+
+$("input").live('change', function(){navigation.currentPage.updateValues();});
 </script>
