@@ -15,7 +15,7 @@
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
 		<style>
-			label.error{display:block;}
+			label.error{display:block; color:red;}
 			
 		</style>
 		
@@ -97,7 +97,7 @@
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="formRadioList">
 	<label for="{{name}}">{{label}}</label>
 	{{#each elements}}
-		<p><label for="{{name}}">{{this.label}}</label><input type="radio" name="{{name}}" value="{{this.value}}" /></p>
+		<p><label for="{{name}}">{{this.label}}</label><input type="radio" name="{{name}}" value="{{this.value}}" {{#if checked}}checked="checked"{{/if}} /></p>
 	{{/each}}
 	{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
 </script>
@@ -194,8 +194,9 @@ formValues = {
 	                    	name:"stdnt_type",
 	                    	label: "Student Type - Check Only One",
 	                        type: "RadioListField",
-	                        elements: [ {label:"Associate Degree Student", value:"assoc", name:"stdnt_type"}, {label:"Bachelor Degree Student", value:"bach", name:"stdnt_type"}, {label:"Certificate Student", value:"cert", name:"stdnt_type"}, {label:"Non-degree Student", value:"nondeg", name:"stdnt_type"}, {label:"High School Student", value:"highsch", name:"stdnt_type"}, {label:"Guest Student", value:"guest", name:"stdnt_type"}, {label:"Apprenticeship Program",value:"apprent", name:"stdnt_type"}, {label:"Continuing Education Units (CEU)",value:"ceu", name:"stdnt_type"}],
+	                        elements: [ {label:"Associate Degree Student", value:"assoc", name:"stdnt_type"}, {label:"Bachelor Degree Student", value:"bach", name:"stdnt_type" }, {label:"Certificate Student", value:"cert", name:"stdnt_type"}, {label:"Non-degree Student", value:"nondeg", name:"stdnt_type"}, {label:"High School Student", value:"highsch", name:"stdnt_type"}, {label:"Guest Student", value:"guest", name:"stdnt_type"}, {label:"Apprenticeship Program",value:"apprent", name:"stdnt_type"}, {label:"Continuing Education Units (CEU)",value:"ceu", name:"stdnt_type"}],
 	                        length: 7,
+	                        required: true,
 	                        error: "string",
 	                        show: true
 	                    }
@@ -798,8 +799,6 @@ formValues = {
     ]
 };
 
-
-
 Navigation = function ( params, templateFactory ){
 	this.render = function (){
 		$("body").empty();
@@ -835,12 +834,12 @@ Navigation = function ( params, templateFactory ){
 
 Page = function ( params ){
 	this.self = self = this;
-	
+
 	this.addSection = function (section, title){
 		this.sections[section.name] = new Section(section, templateFactory);
 		_.extend( this.fields , this.sections[section.name].fields)
 	};
-	
+
 	this.render = function (){
 		this.sectionsHtml = new Array();
 		for (section in this.sections){
@@ -848,14 +847,14 @@ Page = function ( params ){
 		};
 		return( this.template.render(this) );
 	};
-	
+
 	this.getTemplate = function(){
 		this.template = templateFactory.getTemplate(this.type);
 	};
-	
+
 	this.updateValues = function(){
 		for ( field in this.fields ){
-			alert( field.getValue() );
+			alert( this.fields[field].getValue() );
 		}
 	}
 	
@@ -940,8 +939,8 @@ AppRouter = Backbone.Router.extend({
     form: function( page ){
         navigation.setPage( page );
     },
-    default: function(){
-    	router.navigate( "#!/"+navigation.order[0].name, true )
+    "default": function(){
+    	router.navigate( "#!/"+navigation.order[0].name, true );
     }
 });
 
@@ -952,5 +951,5 @@ navigation = new Navigation(formValues, templateFactory);
 router = new AppRouter;
 Backbone.history.start();
 
-$("input").live('change', function(){navigation.currentPage.updateValues();});
+$("input").live('blur', function(){navigation.currentPage.updateValues(); navigation.render();});
 </script>

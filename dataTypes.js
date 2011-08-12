@@ -62,17 +62,6 @@
 		}
 	});
 	
-	formField.DateField = formField.Field.extend({
-	    defaults: {
-			label : "Unassigned date label",
-			name : "unassignedDateName",
-			title : "Unassigned",
-			value : "yyyy-mm-dd",
-			template : "formDate",
-			regex : /^\d{1,2}\/\d{1,2}\/\d{4}$/
-	    }
-	});
-	
 	formField.TextField = formField.Field.extend({
 		defaults: {
 			label : "Unassigned text label",
@@ -82,6 +71,31 @@
 			"class" : "text",
 			errorMessage : "This field contains an error.",
 			template : "formText"
+		}
+	});
+	
+	formField.SelectField = formField.Field.extend({
+		defaults: {
+			label : "Unassigned select label",
+			title : "Unassigned",
+			name : "unassignedSelectName",
+			value : "",
+			options : new Array(),
+			"class" : "select",
+			template : "formSelect"
+		}
+	});
+	
+	formField.BooleanField = formField.Field.extend({
+		defaults: {
+			label : "Unassigned boolean label",
+			title : "Unassigned",
+			name : "unassignedBooleanName",
+			value : "",
+			options : [{label: "Yes", value:1}, {label: "No", value:0}],
+			"class" : "radio-list",
+			errorMessage : "This field contains an error.",
+			template : "formBoolean"
 		}
 	});
 	
@@ -108,14 +122,58 @@
 		}
 	});
 	
+	formField.RadioListField = formField.Field.extend({
+		defaults: {
+			label : "Unassigned radio button list label",
+			title : "Unassigned",
+			name : "unassignedRadioListName",
+			value : "",
+			errorMessage : "This field contains an error.",
+			elements : new Array(),
+			"class" : "radio-list",
+			template : "formRadioList"
+		},
+	    initialize : function (){
+	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]:checked"});
+	    	this.set({ "fieldHtml": this.render() });
+	    },
+		getValue : function(){
+			var curVal = $(this.get("selector")).val();
+			this.set({ "currentValue" : curVal });
+			return( curVal );
+		},
+		setValue : function( value ){
+			this.set({ "currentValue" : value });
+			for ( radio in elements ){
+				if( radio.name === value ){
+					this.set({ "checked" : true });
+				} else {
+					this.set({ "checked" : false });
+				}
+			}
+			
+			return (value);
+		}
+	});
+	
+	formField.DateField = formField.Field.extend({
+	    defaults: {
+			label : "Unassigned date label",
+			name : "unassignedDateName",
+			errorMessage : "This field must contain a valid date.",
+			title : "Unassigned",
+			value : "yyyy-mm-dd",
+			template : "formDate",
+			regex : /^\d{1,2}\/\d{1,2}\/\d{4}$/
+	    },
+	});
+	
 	formField.DateRangeField = formField.Field.extend({
 		defaults: {
 			label : "Unassigned date range label",
 			title : "Unassigned",
 			name : "unassignedDateRangeName",
-			fromDate : "",
-			toDate : "",
-			value : new Object(),
+			value : { fromDate : "" , toDate : "" },
 			"class" : "daterange",
 			template : "formDateRange"
 		}
@@ -138,18 +196,6 @@
 		}
 	});
 	
-	formField.SelectField = formField.Field.extend({
-		defaults: {
-			label : "Unassigned select label",
-			title : "Unassigned",
-			name : "unassignedSelectName",
-			value : "",
-			options : new Array(),
-			"class" : "select",
-			template : "formSelect"
-		}
-	});
-	
 	formField.PhoneField = formField.Field.extend({
 		defaults: {
 			label : "Unassigned option label",
@@ -169,32 +215,6 @@
 			if( this.get("required") ){
 				return( (!this.get("num1") == true) && (!this.get("num2") == true) && (!this.get("num3") == true) );
 			}
-		}
-	});
-	
-	formField.BooleanField = formField.Field.extend({
-		defaults: {
-			label : "Unassigned boolean label",
-			title : "Unassigned",
-			name : "unassignedBooleanName",
-			value : "",
-			options : [{label: "Yes", value:1}, {label: "No", value:0}],
-			"class" : "radio-list",
-			errorMessage : "This field contains an error.",
-			template : "formBoolean"
-		}
-	});
-	
-	formField.RadioListField = formField.Field.extend({
-		defaults: {
-			label : "Unassigned radio button list label",
-			title : "Unassigned",
-			name : "unassignedRadioListName",
-			value : "",
-			errorMessage : "This field contains an error.",
-			elements : new Array(),
-			"class" : "radio-list",
-			template : "formRadioList"
 		}
 	});
 	
