@@ -1,6 +1,88 @@
 (function(window, undefined){
 	var formField = {} 
 	
+	formField.Form = function ( params ){
+		this.self = self = this;
+	
+		this.addSection = function (section, title){
+			this.sections[section.name] = new formField.Section(section, templateFactory);
+			_.extend( this.fields , this.sections[section.name].fields)
+		};
+	
+		this.render = function (){
+			this.sectionsHtml = new Array();
+			for (section in this.sections){
+				this.sectionsHtml.push( this.sections[section].render() );
+			};
+			return( this.template.render(this) );
+		};
+	
+		this.getTemplate = function(){
+			this.template = templateFactory.getTemplate(this.type);
+		};
+	
+		this.updateValues = function(){
+			for ( field in this.fields ){
+				this.fields[field].getValue();
+			}
+		}
+		
+		this.title = params.title;
+		this.sectionsHtml = [];
+		this.type = "formPage";
+		_.extend(this, params);
+		
+		this.sections = new Object();
+		this.fields = new Object();
+		
+		_.map(params.sections, this.addSection, self);
+	
+		this.templateFactory = templateFactory;
+		this.getTemplate();
+	}
+	
+	formField.Section = function (params, templateFactory){
+		this.self = self = this;
+		
+		this.template = "formSection";
+		
+		this.render = function (){
+			this.fieldsHtml = new Array();
+			for (field in this.fields){
+				this.fieldsHtml.push( this.fields[field].render() )
+			}
+			return( this.template.render(this) );
+		}
+		
+		this.render = function(){
+			this.fieldsHtml = new Array();
+			for (field in this.fields){
+				this.fieldsHtml.push( this.fields[field].render() )
+			}
+
+			var objTemplate = this.templateFactory.getTemplate(this.template);
+			this.sectionHtml = objTemplate.render( this );
+			return( this.sectionHtml );
+		},
+		
+		this.addField = function (field){
+			this.fields[field.name] = new formField[field.type](field);
+		}
+		
+		this.title = params.title;
+		this.type = "formSection";
+		this.fieldsHtml = new Array();
+		this.sectionHtml = "";
+		
+		_.extend(this, params);
+		
+		this.fields = new Object();
+		
+		_.map(params.fields, this.addField, self);
+		
+		this.templateFactory = templateFactory;
+	}
+	
 	formField.Field = Backbone.Model.extend({
 	    defaults: {
 			label : "Unassigned",
@@ -13,6 +95,7 @@
 	    initialize : function (){
 	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]"});
 	    	this.set({ "fieldHtml": this.render() });
+	    	this.reset();
 	    },
 		setValue : function( value ){
 			this.set({ "currentValue" : value });
@@ -41,23 +124,23 @@
 		},
 		requireValidate : function(){
 			if( this.get("required") ){
-				return( !this.get("value") == true );
+				return( !this.get("currentValue") == true );
 			};
 		},
 		minLengthValidate : function(){
 			if(this.get("minLength")){
-				return( !this.get("value").length < this.get("minLength") );
+				return( !this.get("currentValue").length < this.get("minLength") );
 			}
 		},
 		maxLengthValidate : function(){
 			if(this.get("maxLength")){
-				return( !this.get("value").length < this.get("minLength") );
+				return( !this.get("currentValue").length < this.get("minLength") );
 			}
 		},
 		regexValidate : function(){
 			if(this.get("regex")){
 				var rexp = new RegExp( this.get("regex") );
-				return( !this.get("value").match(rexp) );
+				return( !this.get("currentValue").match(rexp) );
 			}
 		}
 	});
@@ -208,8 +291,16 @@
 			template : "formPhone"
 		},
 		setValue : function( num1, num2, num3 ){
-			this.set({ "currentValue" : { "num1" : num1, "num2" : num2, "num3" : num3 } });
-			return (value);
+			if (num1 && num2 && num3){
+				this.set({ "num1" : num1 });
+				this.set({ "num2" : num2 });
+				this.set({ "num3" : num3 });
+			} else {
+				this.set({ "num1" : "" });
+				this.set({ "num2" : "" });
+				this.set({ "num3" : "" });
+			}
+			return (this.get("currentValue"));
 		},
 		requireValidate : function(){
 			if( this.get("required") ){

@@ -24,790 +24,64 @@
 	</body>
 </html>
 
-<script id="form-page-template" type="text/x-handlebars-template" title="landingPage">
-	<div>
-		<header>
-			<h1>{{title}}</h1>
-		</header>
-		<div>
-			{{#each paragraphs}}
-				<p>{{this}}</p>
-			{{/each}}
-			<ul>
-				{{#each listItems}}
-				<li>{{this}}</li>
-				{{/each}}
-			</ul>
-			{{subheader}}
-
-		</div>
-	</div>
-</script>
-
-<script id="form-page-template" type="text/x-handlebars-template" title="formPage">
-	<div>
-		<header>
-			<h1>{{title}}</h1>
-		</header>
-		<div>
-		{{navigation}}
-			<form action="" method="" id="newResumeForm">
-				<input type="hidden" value="{{name}}" />
-				{{#each sectionsHtml}}
-					{{{this}}}
-				{{/each}}
-				<ul>
-					<input type="submit" value="Continue" />
-				</ul>
-			</form>
-		</div>
-	</div>
-</script>
-
-<script id="form-radiolist-template" type="text/x-handlebars-template" title="navigation">
-<div>
-	<h2>Navigation</h2>
-	<ul>
-		{{#each order}}
-		<li><a href="#!/{{this.name}}">{{this.name}}</a></li>
-		{{/each}}
-	</ul>
-</div>
-</script>
-
-<script id="section-template" type="text/x-handlebars-template" title="formSection">
-	<h3>{{title}}</h3>
-	{{#if subheader}}<p><em>{{subheader}}</em></p>{{/if}}
-		<ul>
-			{{#each fieldsHtml}}
-			<li>
-				{{{this}}}
-			</li>
-			{{/each}}
-		</ul>
-		
-</script>
-
-<script id="form-page-template" type="text/x-handlebars-template" title="formAlert">
-	<div class="alert">
-			{{body}}
-	</div>
-</script>
-
-<script id="form-radiolist-template" type="text/x-handlebars-template" title="formRadioList">
-	<label for="{{name}}">{{label}}</label>
-	{{#each elements}}
-		<p><label for="{{name}}">{{this.label}}</label><input type="radio" name="{{name}}" value="{{this.value}}" {{#if checked}}checked="checked"{{/if}} /></p>
-	{{/each}}
-	{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
-</script>
-
-<script id="form-checkboxlist-template" type="text/x-handlebars-template" title="formCheckboxList">
-	<label for="{{this.name}}">{{label}}</label><br />
-	{{#each elements}}
-		<input type="checkbox" name="{{this.name}}" value="{{this.value}}" /><label for="{{this.name}}">{{this.label}}</label>
-	{{/each}}
-	{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
-</script>
-
-<script id="form-option-template" type="text/x-handlebars-template" title="formSelect">
-	<p><label for="{{name}}">{{this.label}}</label><br />
-	<select name="{{name}}">
-	{{#each options}}
-		<option value="{{this.value}}">{{this.title}}</option>
-	{{/each}}</p>
-	</select>
-	{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
-	</p>
-</script>
-
-<script id="form-checkbox-template" type="text/x-handlebars-template" title="formCheckbox">
-		<p><label>{{this.label}}</label><input type="checkbox" name="{{name}}" value="{{this.value}}" /></p>
-</script>
-
-<script id="form-dateRange-template" type="text/x-handlebars-template" title="formDateRange">
-		<p>
-			<label>{{this.label}}</label><br />
-			<label class="secondry" for="{{fromName}}">From</label>
-			<input type="text" class="date" name="{{fromName}}" value="{{this.fromValue}}" />
-			<label class="secondry" for="{{toName}}">To</label>
-			<input type="text" class="date" name="{{toName}}" value="{{this.toValue}}" /><label class="format">yyyy-mm-dd</label>
-			{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
-		</p>
-</script>
-
-<script id="form-dateRange-template" type="text/x-handlebars-template" title="formLocation">
-		<p>
-			<label>{{label}}</label><br />
-			<input type="text" class="date" name="{{name}}-city" value="{{value.city}}" />, 
-			<select name="{{value.city}}"></select>
-			{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
-		</p>
-</script>
-
-<script id="form-date-template" type="text/x-handlebars-template" title="formDate">
-		<p>
-			<label>{{this.label}}</label><br />
-			<input type="text" class="date" name="{{name}}" value="{{this.Value}}" />
-			<label class="format">yyyy-mm-dd</label>
-			{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
-		</p>
-</script>
-
-<script id="form-boolean-template" type="text/x-handlebars-template" title="formBoolean">
-		<p><label>{{this.label}}</label><br />
-		{{#each options}}
-			<input type="radio" value="{{value}}" name="{{../name}}" /><label>{{label}}</label>
-		{{/each}}
-		{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
-		</p>
-</script>
-
-<script id="form-phone-template" type="text/x-handlebars-template" title="formPhone">
-		<p><label>{{this.label}}</label><br />
-		(<input name="{{name}}-phone-1" type="text" maxlength="3" value="{{num1}}" size="2"  />)<input name="{{name}}-phone-2" type="text" maxlength="3" value="{{num2}}" size="2"  />-<input name="{{name}}-phone-3" type="text" maxlength="4" value="{{num3}}" size="3"  />{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}</p>
-</script>
-
-<script id="form-text-template" type="text/x-handlebars-template" title="formText">
-		<p><label>{{this.label}}</label><br /><input type="text" name="{{name}}" value="{{this.value}}" />{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}</p>
-</script>
-
 <script type="text/javascript" src="mustache.js">//</script>
 <script type="text/javascript" src="jquery-1.5.1.min.js">//</script>
 <script type="text/javascript" src="underscore.js">//</script>
 <script type="text/javascript" src="backbone.js">//</script>
+
+
+<script type="text/javascript" src="formData.js">//</script>
 <script type="text/javascript" src="dataTypes.js">//</script>
+
+
 <script type="text/javascript">
 
-formValues = {
-    pages: [
-    	{
-    		name:"Personal_Information",
-	        title: "Personal Information",
-	        type: "formPage",
-	        sections: [
-	            {
-	            	name: "Student_Type",
-	                title: "",
-	                fields: [
-	                    {
-	                    	name:"stdnt_type",
-	                    	label: "Student Type - Check Only One",
-	                        type: "RadioListField",
-	                        elements: [ {label:"Associate Degree Student", value:"assoc", name:"stdnt_type"}, {label:"Bachelor Degree Student", value:"bach", name:"stdnt_type" }, {label:"Certificate Student", value:"cert", name:"stdnt_type"}, {label:"Non-degree Student", value:"nondeg", name:"stdnt_type"}, {label:"High School Student", value:"highsch", name:"stdnt_type"}, {label:"Guest Student", value:"guest", name:"stdnt_type"}, {label:"Apprenticeship Program",value:"apprent", name:"stdnt_type"}, {label:"Continuing Education Units (CEU)",value:"ceu", name:"stdnt_type"}],
-	                        length: 7,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    }
-	                ]
-	            },
-	            {
-	            	name: "Student_Status",
-	                title: "Student Status - Check all that apply",
-	                fields: [
-	                    {
-	                    	name: "stts_frmer",
-	                        type: "CheckboxField",
-	                        label: "Former Student",
-	                        value: "",
-	                        length: 1,
-	                        error: "string",
-	                        show: true
-	                    },
-	                    {
-	                    	name: "stts_othCllge",
-	                        type: "CheckboxField",
-	                        label: "Attended another college",
-	                        value: "",
-	                        length: 1,
-	                        error: "string",
-	                        show: true
-	                    },
-	                    {
-	                    	name: "stts_frstCllge",
-	                        type: "CheckboxField",
-	                        label: "First time in any college",
-	                        value: "",
-	                        length: 1,
-	                        error: "string",
-	                        show: true
-	                    },
-	                    {
-	                    	name: "stts_inatStdnt",
-	                        type: "CheckboxField",
-	                        label: "International student",
-	                        value: "",
-	                        length: 1,
-	                        error: "string",
-	                        show: true
-	                    },
-	                    {
-	                    	name: "stts_permAln",
-	                        type: "CheckboxField",
-	                        label: "A permanent resident alien",
-	                        value: "",
-	                        length: 1,
-	                        error: "string",
-	                        show: true
-	                    }
-	                ]
-	            },
-	            {
-	            	name: "Identification",
-	                title: "Identification",
-	                fields: [
-	                    {
-	                    	name: "smc_id",
-	                        type: "TextField",
-	                        label: "SMC Student ID",
-	                        value: "",
-	                        length: 32,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    },
-	                    {
-	                    	name: "birthdate",
-	                        type: "DateField",
-	                        label: "Birth Date",
-	                        value: "",
-	                        length: 10,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    },
-	                    {
-	                    	name: "birthPlace",
-	                    	type: "LocationField",
-	                    	label: "Birth Place",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                    },
-	                    {
-	                    	name: "gender",
-	                    	type: "BooleanField",
-	                    	label: "Gender",
-	                        options: [{label: "Male"}, {label: "Female"}],
-	                        length: 1,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    },
-	                    {
-	                    	name: "language",
-	                    	type: "TextField",
-	                    	label: "Native Language",
-	                    	name: "language",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                    }
-	                    
-	                ]
-	            },
-	            {
-	            	name: "Ethnic",
-	                title: "Ethnic Background Information",
-	                fields: [
-	                	{
-	                		name: "race_ltno",
-	                    	type: "BooleanField",
-	                    	label: "Are you Hispanic/Latino?",
-	                        elements: [{label: "Yes", value: "1", name: "race_ltno"}, {label: "No", value: "2", name: "race_ltno"}],
-	                        length: 1,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    },
-	                    {
-	                    	name: "race",
-	                    	type: "CheckboxListField",
-	                        label: "Regardless of your answer to the prior question, please indicate how you identify yourself. (Check all that apply)",
-	                        elements: [{label: "Black or African American", value: "", name: "race_afrAm"}, {label: "Asian", value: "", name: "race_asian"}, {label: "Native Hawaiian or Other Pacific Islander", value: "", name: "race_hwii"}, {label: "American Indian or Alaska Native", value: "", name: "race_amInd"}, {label: "White", value: "", name:"race_whte"}, {label: "Non-Resident Alien", value: "", name: "race_nResAln"}],
-	                        value: "",
-	                        length: 1,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    }
-	                ]
-	            }
-	        ]
-	    },
+Template = function ( source ) {
+	this.source = source;
+	this.template = Handlebars.compile(source);
+	
+	this.render = function (context) {
+	    return ( this.template(context) );
+	}
+};
+
+TemplateFactory = function(TemplateConstructor, callback){
+	this.getTemplate = function(type){
+		return (this.templates[type]);
+	}
+	
+	var loadTemplates = function(url, callback, self) {
+	    $(document.body).append('<IFRAME id="templates" />');
+	    $('iframe#templates').attr('src', url);
+	
+	    $('iframe#templates').load(function() 
 	    {
-	    	name: "Contact",
-	    	title: "Contact Information",
-	    	type: "formPage",
-	    	sections: [
-	    		{
-	    			name: "Name_Info",
-	    			fields: [
-	    				{
-	    					name: "nameFirst",
-	                    	type: "TextField",
-	                    	label: "First Name",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	    				},
-	    				{
-	    					name: "nameMiddle",
-	                    	type: "TextField",
-	                    	label: "Middle Name",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	    				},
-	    				{
-	    					name: "nameLast",
-	                    	type: "TextField",
-	                    	label: "Last Name",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	    				},
-	    				{
-	    					name: "nameMaiden",
-	                    	type: "TextField",
-	                    	label: "Maiden Name",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	    				}
-	    			]
-	    		},
-	    		{
-	    			name: "Permanent",
-	                title: "Permanent Address",
-	                fields: [
-	                	{
-	                		name: "perm_addr",
-	                    	type: "TextField",
-	                    	label: "Street Address",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "perm_location",
-	                    	type: "LocationField",
-	                    	label:"Permenant City/State",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "perm_zip",
-	                    	type: "TextField",
-	                    	label: "Zip Code",
-	                    	value: "",
-	                    	length: 10,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	}
-	                ]
-	           },
-	           {
-	    			name: "Mailing",
-	                title: "Mailing Address",
-	                fields: [
-	                	{
-	                		name: "mail_addr",
-	                    	type: "TextField",
-	                    	label: "Street Address",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "mail_location",
-	                    	type: "LocationField",
-	                    	value: "",
-	                    	label: "Mailing City/State",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "mail_zip",
-	                    	type: "TextField",
-	                    	label: "Zip Code",
-	                    	value: "",
-	                    	length: 10,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "county",
-	                    	type: "TextField",
-	                    	label: "County",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "township",
-	                    	type: "TextField",
-	                    	label: "Township",
-	                    	value: "",
-	                    	length: 256,
-	                    	required: false,
-	                    	error: "string",
-	                    	show: true
-	                	}
-	                ]
-	           },
-	           {
-	    			name: "Phone",
-	                title: "Phone",
-	                fields: [
-	                	{
-	                		name: "home",
-	                    	type: "PhoneField",
-	                    	label: "Home Phone",
-	                    	value: "",
-	                    	required: true,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "cell",
-	                    	type: "PhoneField",
-	                    	label: "Cell Phone",
-	                    	value: "",
-	                    	required: false,
-	                    	error: "string",
-	                    	show: true
-	                	},
-	                	{
-	                		name: "conf_info",
-	                        type: "CheckboxField",
-	                        label: "Make my information confidential",
-	                        value: "",
-	                        length: 1,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                	}
-	                ]
-	           }
-	    	]
-	    },
-	    {
-    		name:"Education",
-	        title: "Education Information",
-	        type: "formPage",
-	        sections: [
-	            {
-					name:"Education_Information",
-					title: "Education Information",
-					fields: [
-					  {
-	                    	name: "edu_goal",
-							label: "What is your primary educational goal?check only one",
-	                        type: "RadioListField",
-	                        elements: [ {label:"Specific Occupational Program", value:"spec", name:"edu_goal"}, {label:"University/College Transfer", value:"tran", name:"edu_goal"}, {label:"Bachelor's Degree at SMC/Ferris", value:"bach", name:"edu_goal"}, {label:"Continued Personal/Professional Development", value:"cont", name:"edu_goal"}],
-	                        length: 4,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-					  },
-					  {
-	                    	name: "edu_high_grad",
-							label: "Have you graduated from a high school or an adult education program?",
-	                        type: "RadioListField",
-	                        elements: [ {label:"Yes", value:"yes", name:"edu_high_grad"}, {label:"No", value:"no", name:"edu_high_grad"}, {label:"Current high school student", value:"cur", name:"edu_high_grad"}],
-	                        length: 3,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-					  }
-				]
-				},
-				{
-					name: "Education_HighSchool_AdultEd",
-					title: "High School or Adult Education Program",
-					fields: [
-					{
-						name: "edu_school",
-						type: "TextField",
-						label: "School/Program",
-						value: "",
-						length: 256,
-						required: true,
-						error: "string",
-						show: true
-					},
-					{
-						name: "edu_school_location",
-						type: "LocationField",
-						label: "City and State",
-						value: "",
-						length: 256,
-						required: true,
-						error: "string",
-						show: true
-					},
-					{
-						name: "edu_diploma",
-						type: "TextField",
-						label: "What year did you or will you receive a high school diploma?",
-						value: "",
-						length: 4,
-						required: true,
-						error: "string",
-						show: true
-					},
-					{
-						  name: "edu_ged",
-						  label: "Did you receive a GED?",
-						  type: "BooleanField",
-						  elements: [ {label:"Yes", value:"yes", name:"edu_ged"}, {label:"No", value:"no", name:"edu_ged"}],
-						  length: 3,
-						  required: true,
-						  error: "string",
-						  show: true
-					},
-					{
-						name: "edu_ged_when",
-						type: "TextField",
-						label: "If so, what year did you receive your GED?",
-						value: "",
-						length: 4,
-						required: false,
-						error: "string",
-						show: true
-					},
-					{
-						  name: "edu_parents",
-						  label: "Did either your father or mother graduate from a four-year college?",
-						  type: "BooleanField",
-						  elements: [ {label:"Yes", value:"yes", name:"edu_parents"}, {label:"No", value:"no", name:"edu_parents"}],
-						  length: 3,
-						  required: true,
-						  error: "string",
-						  show: true
-					},
-					{
-						name: "edu_when_year",
-						type: "TextField",
-						label: "What year do you plan to start attending Ferris/SMC?",
-						value: "",
-						length: 4,
-						required: true,
-						error: "string",
-						show: true
-					},
-					{
-						  name: "edu_when_semester",
-						  label: "Which Semester?",
-						  type: "RadioListField",
-						  elements: [ {label:"Fall (Late August)", value:"fall", name:"edu_when_semester"}, {label:"Winter (January)", value:"wint", name:"edu_when_semester"}, {label:"Spring (May)", value:"spri", name:"edu_when_semester"}],
-						  length: 4,
-						  required: true,
-						  error: "string",
-						  show: true
-	                    }
-	                ]
-	            },
-				{
-	            	name: "Previous_Colleges_Attended",
-	                title: "Previous Colleges Attended",
-	                fields: [
-					   {
-	                    	name: "pre_name1",
-	                        type: "TextField",
-	                        label: "Name",
-	                        value: "",
-	                        length: 256,
-	                        required: false,
-	                        error: "string",
-	                        show: true
-	                    },
-					   {
-	                    	name: "pre_location1",
-	                        type: "TextField",
-	                        label: "Location",
-	                        value: "",
-	                        length: 256,
-	                        required: false,
-	                        error: "string",
-	                        show: true
-	                    },					
-					  {				  
-							name: "pre_date1",
-							type: "DateRangeField",
-							label: "Dates of Attendance",
-							value: "",
-							required: false,
-							error: "string",
-							show: true,
-					  },
-					   {
-	                    	name: "pre_name2",
-	                        type: "TextField",
-	                        label: "Name",
-	                        value: "",
-	                        length: 256,
-	                        required: false,
-	                        error: "string",
-	                        show: true
-	                    },
-					   {
-	                    	name: "pre_location2",
-	                        type: "TextField",
-	                        label: "Location",
-	                        value: "",
-	                        length: 256,
-	                        required: false,
-	                        error: "string",
-	                        show: true
-	                    },					
-					  {				  
-							name: "pre_date2",
-							type: "DateRangeField",
-							label: "Dates of Attendance",
-							value: "",
-							required: false,
-							error: "string",
-							show: true,
-	                    }
-	                ]
-	            }
-	        ]
-	    },
-	    {
-    		name:"Emergency",
-	        title: "Emergency Information and Authorization",
-	        type: "formPage",
-	        sections: [
-	            {
-	            	name: "Main_Emergency_Contact",
-	                title: "People to contact in case of an emergency",
-	                fields: [
-					   {
-	                    	name: "emg_mfname",
-	                        type: "TextField",
-	                        label: "First Name",
-	                        value: "",
-	                        length: 256,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    },
-					   {
-	                    	name: "emg_mlname",
-	                        type: "TextField",
-	                        label: "Last Name",
-	                        value: "",
-	                        length: 256,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    },					
-					  {				  
-							name: "emg_mphone1",
-							type: "PhoneField",
-							label: "Phone 1",
-							value: "",
-							required: true,
-							error: "string",
-							show: true,
-					  },
-					  {				  
-							name: "emg_mphone2",
-							type: "PhoneField",
-							label: "Phone 2",
-							value: "",
-							required: false,
-							error: "string",
-							show: true,
-					  }
-	                ]
-	            },
-				{
-	            	name: "Secondary_Emergency_Contact",
-	                title: "Secondary Emergency Contact",
-	                fields: [
-					   {
-	                    	name: "emg_sfname",
-	                        type: "TextField",
-	                        label: "First Name",
-	                        value: "",
-	                        length: 256,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    },
-					   {
-	                    	name: "emg_slname",
-	                        type: "TextField",
-	                        label: "Last Name",
-	                        value: "",
-	                        length: 256,
-	                        required: true,
-	                        error: "string",
-	                        show: true
-	                    },					
-					  {				  
-							name: "emg_sphone1",
-							type: "PhoneField",
-							label: "Phone 1",
-							value: "",
-							required: true,
-							error: "string",
-							show: true,
-					  },
-					  {				  
-							name: "emg_sphone2",
-							type: "PhoneField",
-							label: "Phone 2",
-							value: "",
-							required: false,
-							error: "string",
-							show: true,
-	                    }
-	                ]
-	            }
-	        ]
-	    }
-    ]
+	        callback(this, self);
+	    });
+	}
+	
+	loadTemplates("http://127.0.0.1:8020/Admissions-Application/templates.html", function(iframe, self){
+		var templates = new Object();
+		$(iframe).contents().find('script[type="text/x-handlebars-template"]').each(function(index){
+			var datatype = $(this).attr('title');
+			var html = $(this).html();
+			templates[datatype] = new TemplateConstructor(html);
+		})
+		self.templates = templates;
+		return( callback() );
+	}, this)
 };
 
 Navigation = function ( params, templateFactory ){
 	this.render = function (){
+		this.getTemplate();
 		$("body").empty();
 		$("body").append(this.currentPage.render());
 		$("body").prepend( this.template.render(this) );
 	}
 	
 	this.addPage = function ( params , templateFactory ){
-		this.pages[ params.name ] = new Page(params, templateFactory);
+		this.pages[ params.name ] = new formField.Form(params, templateFactory);
 		this.order.push( this.pages[ params.name ] );
 	}
 	
@@ -825,115 +99,16 @@ Navigation = function ( params, templateFactory ){
 	this.type = "navigation";
 	
 	this.templateFactory = templateFactory;
-	this.getTemplate();
 	
 	for( page in params.pages ){
 		this.addPage(params.pages[page], templateFactory);
 	};
 };
 
-Page = function ( params ){
-	this.self = self = this;
-
-	this.addSection = function (section, title){
-		this.sections[section.name] = new Section(section, templateFactory);
-		_.extend( this.fields , this.sections[section.name].fields)
-	};
-
-	this.render = function (){
-		this.sectionsHtml = new Array();
-		for (section in this.sections){
-			this.sectionsHtml.push( this.sections[section].render() );
-		};
-		return( this.template.render(this) );
-	};
-
-	this.getTemplate = function(){
-		this.template = templateFactory.getTemplate(this.type);
-	};
-
-	this.updateValues = function(){
-		for ( field in this.fields ){
-			alert( this.fields[field].getValue() );
-		}
-	}
-	
-	this.title = params.title;
-	this.sectionsHtml = [];
-	this.type = "formPage";
-	_.extend(this, params);
-	
-	this.sections = new Object();
-	this.fields = new Object();
-	
-	_.map(params.sections, this.addSection, self);
-
-	this.templateFactory = templateFactory;
-	this.getTemplate();
-}
-
-Section = function (params, templateFactory){
-	this.self = self = this;
-	
-	this.render = function (){
-		this.fieldsHtml = new Array();
-		for (field in this.fields){
-			this.fieldsHtml.push( this.fields[field].render() )
-		}
-		return( this.template.render(this) );
-	}
-	
-	this.addField = function (field){
-		this.fields[field.name] = new formField[field.type](field);
-	}
-	
-	this.getTemplate = function(){
-		this.template = templateFactory.getTemplate(this.type)
-	}
-	
-	this.title = params.title;
-	this.type = "formSection";
-	this.fieldsHtml = new Array();
-	
-	_.extend(this, params);
-	
-	this.fields = new Object();
-	
-	_.map(params.fields, this.addField, self);
-	
-	this.templateFactory = templateFactory;
-	this.getTemplate();
-}
-
-TemplateFactory = function(TemplateConstructor){
-	this.getTemplate = function(type){
-		return (this.templates[type]);
-	}
-	
-	templates = new Object();
-	
-	$('script[type="text/x-handlebars-template"]').each(function(index){
-		var datatype = $(this).attr('title');
-		var html = $(this).html();
-		templates[datatype] = new TemplateConstructor(html);
-	})
-	
-	this.templates = templates;
-};
-
-Template = function ( source ) {
-	this.source = source;
-	this.template = Handlebars.compile(source);
-	
-	this.render = function (context) {
-	    return ( this.template(context) );
-	}
-};
-
 AppRouter = Backbone.Router.extend({
     routes: {
-        "!/:page": "form", // matches http://example.com/#anything-here
-        "!/:page/:section": "form", // matches http://example.com/#anything-here
+        "!/:page": "form",
+        "!/:page/:section": "form",
 		"*actions": "default"
     },
     form: function( page ){
@@ -944,12 +119,17 @@ AppRouter = Backbone.Router.extend({
     }
 });
 
-templateFactory = new TemplateFactory(Template);
+function bootstrap(){
+	navigation = new Navigation(formValues, templateFactory);
+	router = new AppRouter;
+	Backbone.history.start();
+}
 
-navigation = new Navigation(formValues, templateFactory);
+function initialize(){
+	templateFactory = new TemplateFactory(Template, bootstrap);
+}
 
-router = new AppRouter;
-Backbone.history.start();
+initialize();
 
-$("input").live('blur', function(){navigation.currentPage.updateValues(); navigation.render();});
+$("input").live('change', function(){navigation.currentPage.updateValues(); navigation.render();});
 </script>
