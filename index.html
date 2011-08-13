@@ -6,17 +6,8 @@
 		Remove this if you use the .htaccess -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<title>index</title>
-		<meta name="description" content="" />
-		<meta name="generator" content="Studio 3 http://aptana.com/" />
-		<meta name="author" content="Admissions" />
-		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
-		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
-		<link rel="shortcut icon" href="/favicon.ico" />
-		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<link rel="stylesheet" type="text/css" href="css/style.css" media="all" />
 		<style>
 			label.error{display:block; color:red;}
-			
 		</style>
 		
 	</head>
@@ -45,7 +36,7 @@ Template = function ( source ) {
 	}
 };
 
-TemplateFactory = function(TemplateConstructor, callback){
+TemplateFactory = function(TemplateConstructor, url, callback){
 	this.getTemplate = function(type){
 		return (this.templates[type]);
 	}
@@ -60,7 +51,7 @@ TemplateFactory = function(TemplateConstructor, callback){
 	    });
 	}
 	
-	loadTemplates("http://127.0.0.1:8020/Admissions-Application/templates.html", function(iframe, self){
+	loadTemplates(url, function(iframe, self){
 		var templates = new Object();
 		$(iframe).contents().find('script[type="text/x-handlebars-template"]').each(function(index){
 			var datatype = $(this).attr('title');
@@ -119,17 +110,14 @@ AppRouter = Backbone.Router.extend({
     }
 });
 
-function bootstrap(){
+function initialize(){
 	navigation = new Navigation(formValues, templateFactory);
 	router = new AppRouter;
 	Backbone.history.start();
 }
 
-function initialize(){
-	templateFactory = new TemplateFactory(Template, bootstrap);
-}
 
-initialize();
+templateFactory = new TemplateFactory(Template, initialize);
 
 $("input").live('change', function(){navigation.currentPage.updateValues(); navigation.render();});
 </script>
