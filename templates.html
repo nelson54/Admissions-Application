@@ -89,7 +89,7 @@
 	<p><label for="{{name}}">{{this.label}}</label><br />
 	<select name="{{name}}">
 	{{#each options}}
-		<option value="{{this.value}}">{{this.title}}</option>
+		<option value="{{this.value}}" {{#if selected}}checked="selected"{{/if}}>{{this.title}}</option>
 	{{/each}}</p>
 	</select>
 	{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
@@ -97,7 +97,7 @@
 </script>
 
 <script id="form-checkbox-template" type="text/x-handlebars-template" title="formCheckbox">
-		<p><label>{{this.label}}</label><input type="checkbox" name="{{name}}" value="{{this.value}}" /></p>
+		<p><label>{{this.label}}</label><input type="checkbox" name="{{name}}" {{#if checked}}checked="checked"{{/if}} value="{{this.value}}" /></p>
 </script>
 
 <script id="form-dateRange-template" type="text/x-handlebars-template" title="formDateRange">
@@ -132,7 +132,7 @@
 <script id="form-boolean-template" type="text/x-handlebars-template" title="formBoolean">
 		<p><label>{{this.label}}</label><br />
 		{{#each options}}
-			<input type="radio" value="{{this.currentValue}}" name="{{../name}}" /><label>{{label}}</label>
+			<input type="radio" value="{{this.value}}" name="{{../name}}" {{#if checked}}checked="checked"{{/if}} /><label>{{label}}</label>
 		{{/each}}
 		{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
 		</p>

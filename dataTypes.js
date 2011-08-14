@@ -111,7 +111,7 @@
 		},
 		getValue : function(){
 			var curVal = $(this.get("selector")).val();
-			this.set({ "currentValue" : curVal });
+			this.setValue( curVal );
 			return( curVal );
 		},
 		isValid : function(){
@@ -179,6 +179,26 @@
 			"class" : "radio-list",
 			errorMessage : "This field contains an error.",
 			template : "formBoolean"
+		},
+	    initialize : function (){
+	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]:checked"});
+	    	this.set({ "fieldHtml": this.render() });
+	    	this.reset();
+	    },
+		setValue : function( value ){
+			this.set({ "currentValue" : value });
+			var currentOptions = this.get("options");
+			var updatedOptions = new Array();
+			for ( radio in currentOptions ){
+				if( currentOptions[radio].value.toString() === value ){
+					currentOptions[radio].checked = true;
+				} else {
+					currentOptions[radio].checked = false;
+				}
+				updatedOptions.push(currentOptions[radio]);
+			}
+			this.set({ "options" : updatedOptions });
+			return (updatedOptions);
 		}
 	});
 	
@@ -187,12 +207,29 @@
 			label : "Unassigned checkbox label",
 			title : "Unassigned",
 			name : "unassignedCheckboxName",
+			checked : false,
 			value : "0",
 			"class" : "checkbox",
 			template : "formCheckbox"
+		},
+	    initialize : function (){
+	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]"});
+	    	this.set({ "fieldHtml": this.render() });
+	    	this.reset();
+	    },
+		getValue : function(){
+			var curVal = $(this.get("selector")).attr("checked");
+			this.setValue( curVal );
+			return( curVal );
+		},
+		setValue : function( value ){
+			if ( (value === true) || (value === false)){
+				this.set({ "checked" : value });
+			}
+			return (value);
 		}
 	});
-	
+
 	formField.CheckboxListField = formField.Field.extend({
 		defaults: {
 			label : "Unassigned checkbox list label",
@@ -220,22 +257,20 @@
 	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]:checked"});
 	    	this.set({ "fieldHtml": this.render() });
 	    },
-		getValue : function(){
-			var curVal = $(this.get("selector")).val();
-			this.set({ "currentValue" : curVal });
-			return( curVal );
-		},
 		setValue : function( value ){
 			this.set({ "currentValue" : value });
-			for ( radio in elements ){
-				if( radio.name === value ){
-					this.set({ "checked" : true });
+			var currentOptions = this.get("elements");
+			var updatedOptions = new Array();
+			for ( radio in currentOptions ){
+				if( currentOptions[radio].value === value ){
+					currentOptions[radio].checked = true;
 				} else {
-					this.set({ "checked" : false });
+					currentOptions[radio].checked = false;
 				}
+				updatedOptions.push(currentOptions[radio]);
 			}
-			
-			return (value);
+			this.set({ "elements" : updatedOptions });
+			return (updatedOptions);
 		}
 	});
 	
@@ -247,8 +282,8 @@
 			title : "Unassigned",
 			value : "yyyy-mm-dd",
 			template : "formDate",
-			regex : /^\d{1,2}\/\d{1,2}\/\d{4}$/
-	    },
+			regex : /^\d{4}-\d{1,2}-\d{1,2}$/
+	    }
 	});
 	
 	formField.DateRangeField = formField.Field.extend({
