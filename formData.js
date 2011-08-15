@@ -148,7 +148,7 @@ formValues = {
 	                    	name: "race",
 	                    	type: "CheckboxListField",
 	                        label: "Regardless of your answer to the prior question, please indicate how you identify yourself. (Check all that apply)",
-	                        elements: [{label: "Black or African American", value: "", name: "race_afrAm"}, {label: "Asian", value: "", name: "race_asian"}, {label: "Native Hawaiian or Other Pacific Islander", value: "", name: "race_hwii"}, {label: "American Indian or Alaska Native", value: "", name: "race_amInd"}, {label: "White", value: "", name:"race_whte"}, {label: "Non-Resident Alien", value: "", name: "race_nResAln"}],
+	                        elements: [{label: "Black or African American", name: "race_afrAm"}, {label: "Asian", name: "race_asian"}, {label: "Native Hawaiian or Other Pacific Islander", name: "race_hwii"}, {label: "American Indian or Alaska Native", name: "race_amInd"}, {label: "White", value: "race_whte"}, {label: "Non-Resident Alien", value: "race_nResAln"}],
 	                        value: "",
 	                        length: 1,
 	                        required: true,

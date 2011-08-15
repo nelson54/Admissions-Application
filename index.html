@@ -118,7 +118,7 @@ initialize = function(){
 }
 
 
-templateFactory = new TemplateFactory(Template, 'http://127.0.0.1:8020/Admissions-Application/templates.html', initialize);
+templateFactory = new TemplateFactory(Template, 'templates.html', initialize);
 
 $("input").live('change', function(){navigation.currentPage.updateValues(); navigation.render();});
 </script>
