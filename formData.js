@@ -1,3 +1,5 @@
+states = {AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California', CO: 'Colorado', CT: 'Connecticut', DE: 'Delaware', DC: 'District of Columbia', FL: 'Florida', GA: 'Georgia', HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois', IN: 'Indiana', IA: 'Iowa', KS: 'Kansas', KY: 'Kentucky', LA: 'Louisiana', ME: 'Maine', MD: 'Maryland', MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota', MO: 'Missouri', MT: 'Montana', NE: 'Nebraska', NV: 'Nevada', NH: 'New Hampshire', NJ: 'New Jersey', NM: 'New Mexico', NY: 'New York', NC: 'North Carolina', ND: 'North Dakota', OH: 'Ohio', OK: 'Oklahoma', OR: 'Oregon', PA: 'Pennsylvania', RI: 'Rhode Island', SC: 'South Carolina', SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas', UT: 'Utah', VT: 'Vermont', VA: 'Virginia', WA: 'Washington', WV: 'West Virginia', WI: 'Wisconsin', WY: 'Wyoming'}
+
 formValues = {
     pages: [
     	{
@@ -104,6 +106,7 @@ formValues = {
 	                    	length: 256,
 	                    	required: true,
 	                    	error: "string",
+	                    	options: states,
 	                    	show: true
 	                    },
 	                    {
@@ -148,7 +151,7 @@ formValues = {
 	                    	name: "race",
 	                    	type: "CheckboxListField",
 	                        label: "Regardless of your answer to the prior question, please indicate how you identify yourself. (Check all that apply)",
-	                        elements: [{label: "Black or African American", name: "race_afrAm"}, {label: "Asian", name: "race_asian"}, {label: "Native Hawaiian or Other Pacific Islander", name: "race_hwii"}, {label: "American Indian or Alaska Native", name: "race_amInd"}, {label: "White", value: "race_whte"}, {label: "Non-Resident Alien", value: "race_nResAln"}],
+	                        elements: [{label: "Black or African American", name: "race_afrAm"}, {label: "Asian", name: "race_asian"}, {label: "Native Hawaiian or Other Pacific Islander", name: "race_hwii"}, {label: "American Indian or Alaska Native", name: "race_amInd"}, {label: "White", name: "race_whte"}, {label: "Non-Resident Alien", name: "race_nResAln"}],
 	                        value: "",
 	                        length: 1,
 	                        required: true,
@@ -231,6 +234,7 @@ formValues = {
 	                    	length: 256,
 	                    	required: true,
 	                    	error: "string",
+	                    	options: states,
 	                    	show: true
 	                	},
 	                	{
@@ -267,6 +271,7 @@ formValues = {
 	                    	length: 256,
 	                    	required: true,
 	                    	error: "string",
+	                    	options: states,
 	                    	show: true
 	                	},
 	                	{
@@ -309,7 +314,6 @@ formValues = {
 	                		name: "home",
 	                    	type: "PhoneField",
 	                    	label: "Home Phone",
-	                    	value: "",
 	                    	required: true,
 	                    	error: "string",
 	                    	show: true
@@ -318,7 +322,6 @@ formValues = {
 	                		name: "cell",
 	                    	type: "PhoneField",
 	                    	label: "Cell Phone",
-	                    	value: "",
 	                    	required: false,
 	                    	error: "string",
 	                    	show: true
@@ -390,6 +393,7 @@ formValues = {
 						length: 256,
 						required: true,
 						error: "string",
+						options: states,
 						show: true
 					},
 					{
@@ -406,9 +410,8 @@ formValues = {
 						  name: "edu_ged",
 						  label: "Did you receive a GED?",
 						  type: "BooleanField",
-						  elements: [ {label:"Yes", value:"1"}, {label:"No", value:"0"}],
+						  options: [ {label:"Yes", value:"1"}, {label:"No", value:"0"}],
 						  required: true,
-						  error: "string",
 						  show: true
 					},
 					{
@@ -425,8 +428,7 @@ formValues = {
 						  name: "edu_parents",
 						  label: "Did either your father or mother graduate from a four-year college?",
 						  type: "BooleanField",
-						  elements: [ {label:"Yes", value:"yes"}, {label:"No", value:"0"}],
-						  required: true,
+						  options: [ {label:"Yes", value:"1"}, {label:"No", value:"0"}],
 						  error: "string",
 						  show: true
 					},
@@ -473,6 +475,7 @@ formValues = {
 	                        value: "",
 	                        length: 256,
 	                        required: false,
+	                        options: states,
 	                        error: "string",
 	                        show: true
 	                    },					
@@ -503,6 +506,7 @@ formValues = {
 	                        length: 256,
 	                        required: false,
 	                        error: "string",
+	                        options: states,
 	                        show: true
 	                    },					
 					  {				  
@@ -531,7 +535,6 @@ formValues = {
 	                    	name: "emg_mfname",
 	                        type: "TextField",
 	                        label: "First Name",
-	                        value: "",
 	                        length: 256,
 	                        required: true,
 	                        error: "string",
@@ -541,7 +544,6 @@ formValues = {
 	                    	name: "emg_mlname",
 	                        type: "TextField",
 	                        label: "Last Name",
-	                        value: "",
 	                        length: 256,
 	                        required: true,
 	                        error: "string",
@@ -551,7 +553,6 @@ formValues = {
 							name: "emg_mphone1",
 							type: "PhoneField",
 							label: "Phone 1",
-							value: "",
 							required: true,
 							error: "string",
 							show: true,
@@ -560,7 +561,6 @@ formValues = {
 							name: "emg_mphone2",
 							type: "PhoneField",
 							label: "Phone 2",
-							value: "",
 							required: false,
 							error: "string",
 							show: true,
@@ -595,7 +595,6 @@ formValues = {
 							name: "emg_sphone1",
 							type: "PhoneField",
 							label: "Phone 1",
-							value: "",
 							required: true,
 							error: "string",
 							show: true,
@@ -604,7 +603,6 @@ formValues = {
 							name: "emg_sphone2",
 							type: "PhoneField",
 							label: "Phone 2",
-							value: "",
 							required: false,
 							error: "string",
 							show: true,

@@ -94,8 +94,8 @@
 	    },
 	    initialize : function (){
 	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]"});
+			this.reset();
 	    	this.set({ "fieldHtml": this.render() });
-	    	this.reset();
 	    },
 		setValue : function( value ){
 			this.set({ "currentValue" : value });
@@ -182,8 +182,8 @@
 		},
 	    initialize : function (){
 	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]:checked"});
-	    	this.set({ "fieldHtml": this.render() });
 	    	this.reset();
+	    	this.set({ "fieldHtml": this.render() });
 	    },
 		setValue : function( value ){
 			this.set({ "currentValue" : value });
@@ -235,10 +235,33 @@
 			label : "Unassigned checkbox list label",
 			title : "Unassigned",
 			name : "unassignedCheckboxListName",
-			value : new Object(),
+			value : new Array(),
 			elements : new Array(),
 			"class" : "checkbox-list",
 			template : "formCheckboxList"
+		},
+	    initialize : function (){
+	    	this.set({"selector":function(name){return ("input[name=\""+name+"\"]")}});
+	    	this.set({ "fieldHtml": this.render() });
+	    	this.reset();
+	    },
+		getValue : function(){
+			var selectorFunc = this.get("selector");
+			var currentOptions = this.get("elements");
+			for ( radio in currentOptions ){
+				currentOptions[radio].checked = $( selectorFunc(currentOptions[radio].name) ).attr("checked");
+			}
+			this.setValue( currentOptions );
+			return ( currentOptions );
+		},
+		reset : function(){
+			this.setValue( this.get("elements") );
+		},
+		setValue : function( value ){
+			if ( (value === true) || (value === false)){
+				this.set({ "elements" : value });
+				return (value);
+			}
 		}
 	});
 	
@@ -307,9 +330,15 @@
 			template : "formLocation",
 			errorMessage : "This field contains an error."
 		},
+	    initialize : function (){
+	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]"});
+	    	this.set({options : _.keys(this.get("options")) });
+			this.reset();
+	    	this.set({ "fieldHtml": this.render() });
+	    },
 		requireValidate : function(){
 			if( this.get("required") ){
-				return( (!this.get("value")["city"] == true) && (!this.get("value")["city"] == true) );
+				return( (!this.get("value")["city"] == true) && (!this.get("value")["state"] == true) );
 			}
 		}
 	});
@@ -325,21 +354,26 @@
 			"class" : "phone",
 			template : "formPhone"
 		},
+	    initialize : function (){
+	    	this.set({"selector":function(name){return ("input[name=\""+name+"\"]")}});
+	    	this.set({ "fieldHtml": this.render() });
+	    },
+		getValue : function( num1, num2, num3 ){
+			var selectorFunc = this.get("selector")
+			var name = this.get("name");
+			var value = {"num1":$(selectorFunc(name+"-phone-1")).val(),"num2":$(selectorFunc(name+"-phone-2")).val(),"num3":$(selectorFunc(name+"-phone-3")).val()}
+			this.setValue(value.num1, value.num2, value.num3);
+			return ({"num1":num1,"num2":num2,"num3":num3});
+		},
 		setValue : function( num1, num2, num3 ){
-			if (num1 && num2 && num3){
-				this.set({ "num1" : num1 });
-				this.set({ "num2" : num2 });
-				this.set({ "num3" : num3 });
-			} else {
-				this.set({ "num1" : "" });
-				this.set({ "num2" : "" });
-				this.set({ "num3" : "" });
-			}
-			return (this.get("currentValue"));
+			var newValue = { "num1" : num1, "num2" : num2, "num3" : num3 };
+			this.set({ "value": newValue });
+			return ( { "num1":num1, "num2":num2, "num3":num3 } );
 		},
 		requireValidate : function(){
 			if( this.get("required") ){
-				return( (!this.get("num1") == true) && (!this.get("num2") == true) && (!this.get("num3") == true) );
+				var value = this.get("value")
+				return( !((value.num1 != "") && (value.num2 != "") && (value.num3 != "")) );
 			}
 		}
 	});
