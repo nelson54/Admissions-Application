@@ -50,6 +50,10 @@
 </div>
 </script>
 
+<script id="form-radiolist-template" type="text/x-handlebars-template" title="errorMessage">
+	<label for="{{name}}" class="error">{{errorMessage}}</label>
+</script>
+
 <script id="section-template" type="text/x-handlebars-template" title="formSection">
 	<h3>{{title}}</h3>
 	{{#if subheader}}<p><em>{{subheader}}</em></p>{{/if}}
@@ -60,7 +64,6 @@
 			</li>
 			{{/each}}
 		</ul>
-		
 </script>
 
 <script id="form-page-template" type="text/x-handlebars-template" title="formAlert">

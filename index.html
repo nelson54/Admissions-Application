@@ -9,7 +9,6 @@
 		<style>
 			label.error{display:block; color:red;}
 		</style>
-		
 	</head>
 	<body>
 	</body>
@@ -120,5 +119,5 @@ initialize = function(){
 
 templateFactory = new TemplateFactory(Template, 'templates.html', initialize);
 
-$("input").live('change', function(){navigation.currentPage.updateValues(); navigation.render();});
+$("input").live('change', function(){navigation.currentPage.updateValues(); navigation.currentPage.validate();});
 </script>

@@ -16,6 +16,12 @@
 			};
 			return( this.template.render(this) );
 		};
+		
+		this.validate = function(){
+			for ( field in this.fields ){
+				this.fields[field].showError();
+			}
+		}
 	
 		this.getTemplate = function(){
 			this.template = templateFactory.getTemplate(this.type);
@@ -94,6 +100,7 @@
 	    },
 	    initialize : function (){
 	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]"});
+	    	
 			this.reset();
 	    	this.set({ "fieldHtml": this.render() });
 	    },
@@ -104,7 +111,11 @@
 		render : function(){
 			this.isValid();
 			var objTemplate = templateFactory.getTemplate(this.get("template"));
+			this.set({"messageHtml": templateFactory.getTemplate("errorMessage").render( this.toJSON() ) });
 			return( objTemplate.render( this.toJSON() ) );
+		},
+		showError : function(){
+			$( this.get("selector") ).after( this.get("messageHtml") )
 		},
 		reset : function(){
 			this.setValue( this.get("value") );
