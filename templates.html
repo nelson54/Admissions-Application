@@ -32,7 +32,7 @@
 					{{{this}}}
 				{{/each}}
 				<ul>
-					<input type="submit" value="Continue" />
+					<input type="button" value="Continue" onclick="navigation.currentPage.submit(); return(false);" />
 				</ul>
 			</form>
 		</div>
@@ -51,7 +51,7 @@
 </script>
 
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="errorMessage">
-	<label for="{{name}}" class="error">{{errorMessage}}</label>
+	<label for="{{name}}" title="{{errorMessageName}}" class="error">{{errorMessage}}</label>
 </script>
 
 <script id="section-template" type="text/x-handlebars-template" title="formSection">
@@ -75,9 +75,9 @@
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="formRadioList">
 	<label for="{{name}}">{{label}}</label>
 	{{#each elements}}
-		<p><label for="{{name}}">{{this.label}}</label><input type="radio" name="{{../name}}" value="{{this.value}}" {{#if checked}}checked="checked"{{/if}} /></p>
+		<p title="{{name}}-field"><label for="{{name}}">{{this.label}}</label><input type="radio" name="{{../name}}" value="{{this.value}}" {{#if checked}}checked="checked"{{/if}} /></p>
 	{{/each}}
-	{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
+	<p title="{{name}}-error"></p>
 </script>
 
 <script id="form-checkboxlist-template" type="text/x-handlebars-template" title="formCheckboxList">
@@ -85,7 +85,7 @@
 	{{#each elements}}
 		<input type="checkbox" name="{{this.name}}" value="{{this.value}}" {{#if checked}}checked="checked"{{/if}} /><label for="{{this.name}}">{{this.label}}</label>
 	{{/each}}
-	{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
+	<p title="{{name}}-error"></p>
 </script>
 
 <script id="form-option-template" type="text/x-handlebars-template" title="formSelect">
@@ -95,12 +95,12 @@
 		<option value="{{this.value}}" {{#if selected}}checked="selected"{{/if}}>{{this.title}}</option>
 	{{/each}}</p>
 	</select>
-	{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
-	</p>
+	<p title="{{name}}-error"></p>
 </script>
 
 <script id="form-checkbox-template" type="text/x-handlebars-template" title="formCheckbox">
-		<p><label>{{this.label}}</label><input type="checkbox" name="{{name}}" {{#if checked}}checked="checked"{{/if}} value="{{this.value}}" /></p>
+	<p><label>{{this.label}}</label><input type="checkbox" name="{{name}}" {{#if checked}}checked="checked"{{/if}} value="{{this.value}}" /></p>
+	<p title="{{name}}-error"></p>
 </script>
 
 <script id="form-dateRange-template" type="text/x-handlebars-template" title="formDateRange">
@@ -110,8 +110,8 @@
 			<input type="text" class="date" name="{{fromName}}" value="{{this.fromValue}}" />
 			<label class="secondry" for="{{toName}}">To</label>
 			<input type="text" class="date" name="{{toName}}" value="{{this.toValue}}" /><label class="format">yyyy-mm-dd</label>
-			{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
 		</p>
+		<p title="{{name}}-error"></p>
 </script>
 
 <script id="form-dateRange-template" type="text/x-handlebars-template" title="formLocation">
@@ -124,8 +124,8 @@
 					<option>{{this}}</option>
 				{{/each}}
 			</select>
-			{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
 		</p>
+		<p title="{{name}}-error"></p>
 </script>
 
 <script id="form-date-template" type="text/x-handlebars-template" title="formDate">
@@ -133,8 +133,8 @@
 			<label>{{this.label}}</label><br />
 			<input type="text" class="date" name="{{name}}" value="{{this.currentValue}}" />
 			<label class="format">yyyy-mm-dd</label>
-			{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
 		</p>
+		<p title="{{name}}-error"></p>
 </script>
 
 <script id="form-boolean-template" type="text/x-handlebars-template" title="formBoolean">
@@ -142,16 +142,18 @@
 		{{#each options}}
 			<input type="radio" value="{{this.value}}" name="{{../name}}" {{#if this.checked}}checked="checked"{{/if}} /><label>{{label}}</label>
 		{{/each}}
-		{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}
 		</p>
+		<p title="{{name}}-error"></p>
 </script>
 
 <script id="form-phone-template" type="text/x-handlebars-template" title="formPhone">
 		<p><label>{{this.label}}</label><br />
-		(<input name="{{name}}-phone-1" type="text" maxlength="3" value="{{value.num1}}" size="2"  />)<input name="{{name}}-phone-2" type="text" maxlength="3" value="{{value.num2}}" size="2"  />-<input name="{{name}}-phone-3" type="text" maxlength="4" value="{{value.num3}}" size="3"  />{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}</p>
+		(<input name="{{name}}-phone-1" type="text" maxlength="3" value="{{value.num1}}" size="2"  />)<input name="{{name}}-phone-2" type="text" maxlength="3" value="{{value.num2}}" size="2"  />-<input name="{{name}}-phone-3" type="text" maxlength="4" value="{{value.num3}}" size="3"  /></p>
+		<p title="{{name}}-error"></p>
 </script>
 
 <script id="form-text-template" type="text/x-handlebars-template" title="formText">
-		<p><label>{{this.label}}</label><br /><input type="text" name="{{name}}" value="{{this.currentValue}}" />{{#if invalid}}<label class="error">{{errorMessage}}</label>{{/if}}</p>
+		<p><label>{{this.label}}</label><br /><input type="text" name="{{name}}" value="{{this.currentValue}}" /></p>
+		<p title="{{name}}-error"></p>
 </script>
 </html>

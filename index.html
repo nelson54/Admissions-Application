@@ -63,7 +63,7 @@ TemplateFactory = function(TemplateConstructor, url, callback){
 	}, this)
 };
 
-Navigation = function ( params, templateFactory ){
+Navigation = function ( params ){
 	this.render = function (){
 		this.getTemplate();
 		$("body").empty();
@@ -71,14 +71,16 @@ Navigation = function ( params, templateFactory ){
 		$("body").prepend( this.template.render(this) );
 	}
 	
-	this.addPage = function ( params , templateFactory ){
-		this.pages[ params.name ] = new formField.Form(params, templateFactory);
-		this.order.push( this.pages[ params.name ] );
+	this.addPage = function ( params, templateFactory ){
+		var page = this.pages[ params.name ] = new formField.Form(params, templateFactory);
+		page.pagePosition = this.order.length;
+		this.order.push( page );
 	}
-	
 	this.setPage = function ( page ){
 		this.currentPage = this.pages[ page ];
+		this.currentPage.nextPage= "!/"+this.order[this.currentPage.pagePosition + 1].name;
 		this.render();
+		this.currentPage.validate();
 	}
 	
 	this.getTemplate = function(){
@@ -94,6 +96,8 @@ Navigation = function ( params, templateFactory ){
 	for( page in params.pages ){
 		this.addPage(params.pages[page], templateFactory);
 	};
+	
+	
 };
 
 AppRouter = Backbone.Router.extend({
@@ -119,5 +123,12 @@ initialize = function(){
 
 templateFactory = new TemplateFactory(Template, 'templates.html', initialize);
 
-$("input").live('change', function(){navigation.currentPage.updateValues(); navigation.currentPage.validate();});
+$('input').live('click', function(){
+	navigation.currentPage.updateValues(); 
+	navigation.currentPage.validate();
+});
+$('input[type="text"]').live('keyup', function(){
+	navigation.currentPage.updateValues(); 
+	navigation.currentPage.validate();
+});
 </script>

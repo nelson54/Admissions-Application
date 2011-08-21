@@ -22,7 +22,12 @@
 				this.fields[field].showError();
 			}
 		}
-	
+		
+		this.submit = function(){
+			this.updateValues();
+			document.location.hash = this.nextPage;
+		}
+		
 		this.getTemplate = function(){
 			this.template = templateFactory.getTemplate(this.type);
 		};
@@ -100,7 +105,8 @@
 	    },
 	    initialize : function (){
 	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]"});
-	    	
+	    	this.set({ "errorMessageName":this.get("name") + "ErrorMessage"});
+	    	this.set({"messageHtml": templateFactory.getTemplate("errorMessage").render( this.toJSON() ) });
 			this.reset();
 	    	this.set({ "fieldHtml": this.render() });
 	    },
@@ -111,11 +117,16 @@
 		render : function(){
 			this.isValid();
 			var objTemplate = templateFactory.getTemplate(this.get("template"));
-			this.set({"messageHtml": templateFactory.getTemplate("errorMessage").render( this.toJSON() ) });
 			return( objTemplate.render( this.toJSON() ) );
 		},
 		showError : function(){
-			$( this.get("selector") ).after( this.get("messageHtml") )
+			if ( this.isValid() == false && $( 'label[for="'+this.get('name')+'"].error' ).length == 0  ){
+				$('p[title="'+this.get('name')+'-error"]').append( this.get("messageHtml") )
+			} else if ( this.isValid() == false && $( 'label[for="'+this.get('name')+'"].error' ).length != 0 ){
+				return(true);
+			} else {
+				$('label[for="'+this.get('name')+'"].error').remove() 
+			}
 		},
 		reset : function(){
 			this.setValue( this.get("value") );
@@ -137,22 +148,26 @@
 			if( this.get("required") ){
 				return( !this.get("currentValue") == true );
 			};
+			return false;
 		},
 		minLengthValidate : function(){
 			if(this.get("minLength")){
 				return( !this.get("currentValue").length < this.get("minLength") );
-			}
+			};
+			return false;
 		},
 		maxLengthValidate : function(){
 			if(this.get("maxLength")){
 				return( !this.get("currentValue").length < this.get("minLength") );
 			}
+			return false;
 		},
 		regexValidate : function(){
 			if(this.get("regex")){
 				var rexp = new RegExp( this.get("regex") );
 				return( !this.get("currentValue").match(rexp) );
 			}
+			return false;
 		}
 	});
 	
@@ -193,6 +208,7 @@
 		},
 	    initialize : function (){
 	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]:checked"});
+	    	this.set({"messageHtml": templateFactory.getTemplate("errorMessage").render( this.toJSON() ) });
 	    	this.reset();
 	    	this.set({ "fieldHtml": this.render() });
 	    },
@@ -225,6 +241,7 @@
 		},
 	    initialize : function (){
 	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]"});
+	    	this.set({"messageHtml": templateFactory.getTemplate("errorMessage").render( this.toJSON() ) });
 	    	this.set({ "fieldHtml": this.render() });
 	    	this.reset();
 	    },
@@ -253,6 +270,7 @@
 		},
 	    initialize : function (){
 	    	this.set({"selector":function(name){return ("input[name=\""+name+"\"]")}});
+	    	this.set({"messageHtml": templateFactory.getTemplate("errorMessage").render( this.toJSON() ) });
 	    	this.set({ "fieldHtml": this.render() });
 	    	this.reset();
 	    },
@@ -289,6 +307,7 @@
 		},
 	    initialize : function (){
 	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]:checked"});
+	    	this.set({"messageHtml": templateFactory.getTemplate("errorMessage").render( this.toJSON() ) });
 	    	this.set({ "fieldHtml": this.render() });
 	    },
 		setValue : function( value ){
@@ -343,6 +362,7 @@
 		},
 	    initialize : function (){
 	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]"});
+	    	this.set({"messageHtml": templateFactory.getTemplate("errorMessage").render( this.toJSON() ) });
 	    	this.set({options : _.keys(this.get("options")) });
 			this.reset();
 	    	this.set({ "fieldHtml": this.render() });
@@ -367,6 +387,7 @@
 		},
 	    initialize : function (){
 	    	this.set({"selector":function(name){return ("input[name=\""+name+"\"]")}});
+	    	this.set({"messageHtml": templateFactory.getTemplate("errorMessage").render( this.toJSON() ) });
 	    	this.set({ "fieldHtml": this.render() });
 	    },
 		getValue : function( num1, num2, num3 ){
