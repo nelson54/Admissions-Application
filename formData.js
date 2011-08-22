@@ -610,6 +610,11 @@ formValues = {
 	                ]
 	            }
 	        ]
+	    },
+	    {
+	    	name: "review",
+	    	title: "Review",
+	        type: "reviewPage"
 	    }
     ]
 };

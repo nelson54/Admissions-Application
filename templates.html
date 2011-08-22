@@ -32,19 +32,46 @@
 					{{{this}}}
 				{{/each}}
 				<ul>
-					<input type="button" value="Continue" onclick="navigation.currentPage.submit(); return(false);" />
+					<input type="button" value="Continue" onclick="document.location.hash = '!/submit'; return(false);" />
 				</ul>
 			</form>
 		</div>
 	</div>
 </script>
 
+<script id="form-review-page" type="text/x-handlebars-template" title="reviewPage">
+	<div>
+		<header>
+			<h1>Review</h1>
+		</header>
+		<div>
+		{{navigation}}
+
+		{{#each pageReviewHtml}}
+			{{{this}}}
+		{{/each}}
+		</div>
+	</div>
+</script>
+
+<script id="form-review-page" type="text/x-handlebars-template" title="reviewSection">
+<table>
+	<h2>{{title}}</h2>
+	{{#each fieldAttribs}}
+	<tr>
+		<td>{{this.label}}</td>
+		<td>{{this.currentValue}}</td>
+	</tr>
+	{{/each}}
+</table>
+</script>
+
 <script id="form-radiolist-template" type="text/x-handlebars-template" title="navigation">
 <div>
 	<h2>Navigation</h2>
 	<ul>
-		{{#each order}}
-		<li><a href="#!/{{this.name}}">{{this.name}}</a></li>
+		{{#each pages}}
+		<li><a href="#!/{{this.name}}">{{this.title}}</a></li>
 		{{/each}}
 	</ul>
 </div>

@@ -23,12 +23,19 @@
 			}
 		}
 		
+		this.renderReview = function(){
+			for ( field in this.fields ){
+				this.fieldAttribs.push( this.fields[field].toJSON() );
+			}
+			return( this.templateReview.render(this) );
+		}
+		
 		this.submit = function(){
 			this.updateValues();
-			document.location.hash = this.nextPage;
 		}
 		
 		this.getTemplate = function(){
+			this.templateReview = templateFactory.getTemplate("reviewSection");
 			this.template = templateFactory.getTemplate(this.type);
 		};
 	
@@ -40,6 +47,7 @@
 		
 		this.title = params.title;
 		this.sectionsHtml = [];
+		this.fieldAttribs = [];
 		this.type = "formPage";
 		_.extend(this, params);
 		
@@ -50,6 +58,24 @@
 	
 		this.templateFactory = templateFactory;
 		this.getTemplate();
+	}
+	
+	formField.reviewPage = function ( params, templateFactory ){
+		this.render = function (){
+			this.sectionsHtml = new Array();
+			for (page in this.pages){
+				if ( this.pages[page].type === "formPage" ){
+					this.pageReviewHtml.push( this.pages[page].renderReview() );
+				}
+			};
+			return( this.template.render(this) );
+		};
+		
+		this.template = templateFactory.getTemplate("reviewPage");
+		
+		_.extend(this, params);
+		
+		this.pageReviewHtml = [];
 	}
 	
 	formField.Section = function (params, templateFactory){
@@ -101,7 +127,7 @@
 			title : "Unassigned",
 			value : "Unassigned",
 			template : "formText",
-			errorMessage : "This field contains an error.",
+			errorMessage : "This field contains an error."
 	    },
 	    initialize : function (){
 	    	this.set({"selector":"input[name=\""+this.get("name")+"\"]"});

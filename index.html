@@ -72,23 +72,46 @@ Navigation = function ( params ){
 	}
 	
 	this.addPage = function ( params, templateFactory ){
-		var page = this.pages[ params.name ] = new formField.Form(params, templateFactory);
-		page.pagePosition = this.order.length;
-		this.order.push( page );
+		this.pagePointerLookup[ params.name ] = page.pagePosition =  this.pages.length;
+		
+		if (params.type === "formPage" ){ 
+			this.pages.push( new formField.Form(params, templateFactory) ); } 
+		else {
+			params["pages"] = this.pages;
+			this.pages.push( new formField.reviewPage( params, templateFactory ) );
+		}
 	}
-	this.setPage = function ( page ){
-		this.currentPage = this.pages[ page ];
-		this.currentPage.nextPage= "!/"+this.order[this.currentPage.pagePosition + 1].name;
+	
+	this.setPage = function ( pointer ){
+		this.currentPointer = pointer;
+		this.currentPage = this.pages[ pointer ];
+		
+		if ( this.currentPage.type === "reviewPage" ){ 
+			this.currentPage.pages = this.pages;
+		};
+		
 		this.render();
-		this.currentPage.validate();
+		
+		if (this.currentPage.type === "formPage" ){ 
+			this.currentPage.validate();
+		};
+	}
+	
+	this.next = function (){
+		return( this.pages[ this.currentPointer + 1] );
+	}
+	
+	this.setPageByName = function( name ){
+		this.setPage( this.pagePointerLookup[name] );
 	}
 	
 	this.getTemplate = function(){
 		this.template = templateFactory.getTemplate(this.type)
 	}
 	
-	this.pages = new Object();
-	this.order = new Array();
+	this.pagePointerLookup = {}
+	
+	this.pages = new Array();
 	this.type = "navigation";
 	
 	this.templateFactory = templateFactory;
@@ -96,21 +119,24 @@ Navigation = function ( params ){
 	for( page in params.pages ){
 		this.addPage(params.pages[page], templateFactory);
 	};
-	
-	
 };
 
 AppRouter = Backbone.Router.extend({
     routes: {
+    	"!/submit": "submit",
         "!/:page": "form",
         "!/:page/:section": "form",
 		"*actions": "default"
     },
     form: function( page ){
-        navigation.setPage( page );
+        navigation.setPage( navigation.pagePointerLookup[page] );
+    },
+    submit: function( page ){
+        navigation.currentPage.submit();
+        return( router.navigate( "#!/" + navigation.next().name, true ) )
     },
     "default": function(){
-    	router.navigate( "#!/"+navigation.order[0].name, true );
+    	router.navigate( "#!/" + navigation.pages[0].name, true );
     }
 });
 
@@ -124,11 +150,11 @@ initialize = function(){
 templateFactory = new TemplateFactory(Template, 'templates.html', initialize);
 
 $('input').live('click', function(){
-	navigation.currentPage.updateValues(); 
+	navigation.currentPage.updateValues();
 	navigation.currentPage.validate();
 });
 $('input[type="text"]').live('keyup', function(){
-	navigation.currentPage.updateValues(); 
+	navigation.currentPage.updateValues();
 	navigation.currentPage.validate();
 });
 </script>
